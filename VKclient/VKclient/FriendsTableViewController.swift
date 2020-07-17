@@ -22,6 +22,9 @@ class FriendsTableViewController: UITableViewController {
     }
 
     
+    
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as? FriendsCell else {fatalError()}
         let data = friends[indexPath.row]
