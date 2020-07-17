@@ -10,6 +10,8 @@ import UIKit
 
 class PhotoFriendsCell: UICollectionViewCell {
     @IBOutlet weak var photoFriends: UIImageView!
+
+    
     
     override func prepareForReuse() {
           super.prepareForReuse()

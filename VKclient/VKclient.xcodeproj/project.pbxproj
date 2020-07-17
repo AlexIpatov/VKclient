@@ -24,6 +24,7 @@
 		04C9167124B6434B00722318 /* PhotoFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9167024B6434B00722318 /* PhotoFriendsCell.swift */; };
 		04C9167424B6474100722318 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9167324B6474100722318 /* User.swift */; };
 		04CEB20924B854C200E1A974 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CEB20824B854C200E1A974 /* Group.swift */; };
+		04D98EE024C0598200EB8AFD /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D98EDF24C0598200EB8AFD /* LikeControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		04C9167024B6434B00722318 /* PhotoFriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFriendsCell.swift; sourceTree = "<group>"; };
 		04C9167324B6474100722318 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		04CEB20824B854C200E1A974 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		04D98EDF24C0598200EB8AFD /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 				0438411624ACF3950047B599 /* LaunchScreen.storyboard */,
 				0438411924ACF3950047B599 /* Info.plist */,
 				04C9167024B6434B00722318 /* PhotoFriendsCell.swift */,
+				04D98EDF24C0598200EB8AFD /* LikeControl.swift */,
 				04C9163A24B5C83C00722318 /* FriendsCell.swift */,
 				04C9164624B5ED2900722318 /* CommunityCell.swift */,
 				04C9164A24B5F68E00722318 /* RecommendedCommunitiesCell.swift */,
@@ -186,6 +189,7 @@
 				04C9164724B5ED2900722318 /* CommunityCell.swift in Sources */,
 				04C9167124B6434B00722318 /* PhotoFriendsCell.swift in Sources */,
 				0438410C24ACF3910047B599 /* AppDelegate.swift in Sources */,
+				04D98EE024C0598200EB8AFD /* LikeControl.swift in Sources */,
 				04CEB20924B854C200E1A974 /* Group.swift in Sources */,
 				04C9163D24B5D57D00722318 /* PhotoFriendsCollectionViewController.swift in Sources */,
 				04C9164124B5D8B300722318 /* CommunityTableViewController.swift in Sources */,

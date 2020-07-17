@@ -12,16 +12,17 @@ import UIKit
 struct User {
     let name: String
     let avatar: UIImage?
+    let photos: [String]
    
     
 }
 
 
 var friends = [
-      
-    User(name: "Саша",avatar: UIImage(named: "manAva")),
-      User(name: "Даша", avatar:  UIImage(named: "womanAva")),
-      User(name: "Алеша", avatar:  UIImage(named: "manAva"))
+  
+    User(name: "Саша",avatar: UIImage(named: "manAva"), photos: alexPhoto),
+      User(name: "Даша", avatar:  UIImage(named: "womanAva"), photos: dashaPhoto),
+      User(name: "Алеша", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto)
   ]
 
 

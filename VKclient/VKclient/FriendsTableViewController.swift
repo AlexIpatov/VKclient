@@ -8,10 +8,10 @@
 
 import UIKit
 
-  var userId: IndexPath!
+
 
 class FriendsTableViewController: UITableViewController {
-
+  
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ class FriendsTableViewController: UITableViewController {
         
     }
 
-  
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as? FriendsCell else {fatalError()}
         let data = friends[indexPath.row]
@@ -31,10 +31,21 @@ class FriendsTableViewController: UITableViewController {
         return cell
         
     }
+    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        userId = indexPath
-       print(indexPath)
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "friendsPhotoVC") as? PhotoFriendsCollectionViewController else {
+            return
+        }
+        let friendPhoto = friends[indexPath.row]
+        vc.photoInPhotoCollection = friendPhoto.photos
+        navigationController?.pushViewController(vc, animated: true)
+      
+     
+      
+        
     }
+
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     

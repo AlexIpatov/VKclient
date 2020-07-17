@@ -142,30 +142,57 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M2V-mU-7oQ">
-                                            <rect key="frame" x="186" y="22.666666666666668" width="64.666666666666686" height="34.666666666666657"/>
+                                            <rect key="frame" x="105" y="23.666666666666671" width="204" height="33"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="33" id="E0A-3m-3IV"/>
+                                                <constraint firstAttribute="width" constant="289" id="Vcp-Mq-4O7"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="29"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="faB-7i-bRr">
-                                            <rect key="frame" x="32" y="7" width="70" height="66.666666666666671"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wuf-aZ-c4m" customClass="AvaView" customModule="VKclient" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="5" width="70" height="70"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xLI-7F-483">
+                                                    <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="70" id="Qk9-0L-NXa"/>
+                                                        <constraint firstAttribute="height" constant="70" id="XId-eO-yRS"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="70" id="2VC-bh-DUL"/>
-                                                <constraint firstAttribute="height" constant="70" id="VMw-sw-gU5"/>
+                                                <constraint firstAttribute="height" constant="70" id="4cp-Hi-o9u"/>
+                                                <constraint firstItem="xLI-7F-483" firstAttribute="top" secondItem="Wuf-aZ-c4m" secondAttribute="top" id="9Jh-dk-DWq"/>
+                                                <constraint firstAttribute="width" constant="70" id="EGk-Lc-v8t"/>
+                                                <constraint firstItem="xLI-7F-483" firstAttribute="leading" secondItem="Wuf-aZ-c4m" secondAttribute="leading" id="RmX-Cb-wbI"/>
                                             </constraints>
-                                        </imageView>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                                    <real key="value" value="35"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="faB-7i-bRr" firstAttribute="leading" secondItem="vMI-Nt-cgE" secondAttribute="leading" constant="32" id="3TB-PF-dgi"/>
-                                        <constraint firstItem="M2V-mU-7oQ" firstAttribute="centerY" secondItem="vMI-Nt-cgE" secondAttribute="centerY" id="XvJ-qt-4nO"/>
-                                        <constraint firstItem="M2V-mU-7oQ" firstAttribute="leading" secondItem="vMI-Nt-cgE" secondAttribute="leading" constant="186" id="asG-CY-oET"/>
-                                        <constraint firstItem="faB-7i-bRr" firstAttribute="centerY" secondItem="vMI-Nt-cgE" secondAttribute="centerY" id="ece-Oo-mGs"/>
+                                        <constraint firstItem="M2V-mU-7oQ" firstAttribute="centerY" secondItem="vMI-Nt-cgE" secondAttribute="centerY" id="0su-YV-sAH"/>
+                                        <constraint firstItem="M2V-mU-7oQ" firstAttribute="leading" secondItem="vMI-Nt-cgE" secondAttribute="leading" constant="105" id="DTm-oU-CuC"/>
+                                        <constraint firstItem="Wuf-aZ-c4m" firstAttribute="leading" secondItem="vMI-Nt-cgE" secondAttribute="leading" constant="15" id="geU-cQ-MoM"/>
+                                        <constraint firstItem="M2V-mU-7oQ" firstAttribute="centerX" secondItem="vMI-Nt-cgE" secondAttribute="centerX" id="mXF-ak-kfC"/>
+                                        <constraint firstItem="Wuf-aZ-c4m" firstAttribute="centerY" secondItem="vMI-Nt-cgE" secondAttribute="centerY" id="pex-Y3-uf4"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRad">
+                                        <real key="value" value="6"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <outlet property="avaImage" destination="faB-7i-bRr" id="Esa-yz-LmQ"/>
+                                    <outlet property="avaContView" destination="Wuf-aZ-c4m" id="APj-Eg-h5x"/>
+                                    <outlet property="avaImage" destination="xLI-7F-483" id="ZoY-xU-KVa"/>
                                     <outlet property="titleLabel" destination="M2V-mU-7oQ" id="PZX-PV-Jzi"/>
-                                    <segue destination="Dp3-bi-QBa" kind="show" id="Kgj-HC-dXm"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -183,7 +210,7 @@
         <!--Фото-->
         <scene sceneID="jWy-B6-EbV">
             <objects>
-                <collectionViewController modalPresentationStyle="fullScreen" id="Dp3-bi-QBa" customClass="PhotoFriendsCollectionViewController" customModule="VKclient" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="friendsPhotoVC" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Dp3-bi-QBa" customClass="PhotoFriendsCollectionViewController" customModule="VKclient" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="xtl-vN-wn4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -202,9 +229,13 @@
                                     <rect key="frame" x="0.0" y="0.0" width="130" height="130"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alexPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="RvZ-VR-Orw">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alexPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="RvZ-VR-Orw">
                                             <rect key="frame" x="25.666666666666664" y="15" width="78.666666666666686" height="100"/>
                                         </imageView>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OEg-wI-NT0" customClass="LikeControl" customModule="VKclient" customModuleProvider="target">
+                                            <rect key="frame" x="94" y="97" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="RvZ-VR-Orw" secondAttribute="bottom" constant="15" id="0Qn-m8-fs5"/>
@@ -394,6 +425,5 @@
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.3" catalog="system" width="128" height="62"/>
         <image name="person.3.fill" catalog="system" width="128" height="61"/>
-        <image name="person.fill" catalog="system" width="128" height="120"/>
     </resources>
 </document>
