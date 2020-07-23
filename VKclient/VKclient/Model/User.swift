@@ -18,11 +18,11 @@ struct User {
 }
 
 
-var friends = [
-  
-    User(name: "Саша",avatar: UIImage(named: "manAva"), photos: alexPhoto),
-      User(name: "Даша", avatar:  UIImage(named: "womanAva"), photos: dashaPhoto),
-      User(name: "Алеша", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto)
-  ]
+
+
+
+
+
+
 
 

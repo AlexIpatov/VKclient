@@ -31,7 +31,7 @@ import UIKit
                   imageView.rightAnchor.constraint(equalTo: countLable.leftAnchor),
                   imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
                   imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                  imageView.heightAnchor.constraint(equalToConstant: 20)
+                  imageView.heightAnchor.constraint(equalToConstant: 30)
                       
               ]
               
