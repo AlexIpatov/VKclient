@@ -80,8 +80,19 @@ import UIKit
         count += isSelected ? 1 : -1
         updateCount()
         sendActions(for: .valueChanged)
+        let animation = CASpringAnimation(keyPath: "transform.scale")
+        animation.fromValue = 0.4
+        animation.toValue = 1
+        animation.stiffness = 150
+        animation.mass = 1.5
+        animation.duration = 1
+        animation.beginTime = CACurrentMediaTime()
+        animation.fillMode = CAMediaTimingFillMode.backwards
+        
+        self.imageView.layer.add(animation, forKey: nil)
+        self.countLable.layer.add(animation, forKey: nil)
     }
-   
     
-
+    
+    
 }

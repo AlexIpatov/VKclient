@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0414709624CAE5190005CE5E /* LaunchThreePoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414709524CAE5190005CE5E /* LaunchThreePoints.swift */; };
 		0438410C24ACF3910047B599 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438410B24ACF3910047B599 /* AppDelegate.swift */; };
 		0438410E24ACF3910047B599 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438410D24ACF3910047B599 /* SceneDelegate.swift */; };
 		0438411024ACF3910047B599 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438410F24ACF3910047B599 /* ViewController.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0414709524CAE5190005CE5E /* LaunchThreePoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchThreePoints.swift; sourceTree = "<group>"; };
 		0438410824ACF3910047B599 /* VKclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0438410B24ACF3910047B599 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0438410D24ACF3910047B599 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				0438410B24ACF3910047B599 /* AppDelegate.swift */,
 				0438410D24ACF3910047B599 /* SceneDelegate.swift */,
 				0438410F24ACF3910047B599 /* ViewController.swift */,
+				0414709524CAE5190005CE5E /* LaunchThreePoints.swift */,
 				0438411424ACF3950047B599 /* Assets.xcassets */,
 				0438411624ACF3950047B599 /* LaunchScreen.storyboard */,
 				0438411924ACF3950047B599 /* Info.plist */,
@@ -252,6 +255,7 @@
 				04CEB20924B854C200E1A974 /* Group.swift in Sources */,
 				04C9163D24B5D57D00722318 /* PhotoFriendsCollectionViewController.swift in Sources */,
 				04C9164124B5D8B300722318 /* CommunityTableViewController.swift in Sources */,
+				0414709624CAE5190005CE5E /* LaunchThreePoints.swift in Sources */,
 				04C9167424B6474100722318 /* User.swift in Sources */,
 				04C9164924B5F58700722318 /* RecommendedCommunitiesTableViewController.swift in Sources */,
 				04C9163924B5C56A00722318 /* FriendsTableViewController.swift in Sources */,

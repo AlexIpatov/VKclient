@@ -13,6 +13,10 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+     var firstPoint: UIView = UIView()
+       var secondPoint: UIView = UIView()
+       var thirdPoint: UIView = UIView()
+    
     
     private func checkLoginInfo() -> Bool {
           guard let loginText = loginTextField.text else { return false }
@@ -99,7 +103,54 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         vkLOgo.image = UIImage.init(named: "VkLogo")
     }
-     
+    
+    
+    
+      
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        addthreePoint()
+        
+        UIView.animate(withDuration: 1.1, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.firstPoint.alpha = 0
+           
+            
+        })
+        UIView.animate(withDuration: 1.1, delay: 0.6, options: [.repeat, .autoreverse], animations: {
+                  self.secondPoint.alpha = 0
+               
+                  
+              })
+        UIView.animate(withDuration: 1.1, delay: 1.1, options: [.repeat, .autoreverse],  animations: {
+                   self.thirdPoint.alpha = 0
+             
+                   
+               })
+    }
+      
+      func addthreePoint() {
+        firstPoint.frame =  CGRect(x: (view.frame.width - 100) / 2, y: view.frame.height - 350, width: 20, height: 20)
+        secondPoint.frame = CGRect(x: (view.frame.width - 20) / 2, y: view.frame.height - 350, width: 20, height: 20)
+        thirdPoint.frame =  CGRect(x: (view.frame.width + 60 ) / 2, y: view.frame.height - 350, width: 20, height: 20)
+        
+          firstPoint.backgroundColor = .gray
+        firstPoint.layer.cornerRadius = firstPoint.bounds.width / 2
+          secondPoint.backgroundColor = firstPoint.backgroundColor
+         secondPoint.layer.cornerRadius = firstPoint.bounds.width / 2
+          thirdPoint.backgroundColor = firstPoint.backgroundColor
+         thirdPoint.layer.cornerRadius = firstPoint.bounds.width / 2
+        
+        
+   
+       
+        
+        view.addSubview(firstPoint)
+        view.addSubview(secondPoint)
+        view.addSubview(thirdPoint)
+        
+        
+        
+      }
 
 }
 
