@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0414709624CAE5190005CE5E /* LaunchThreePoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414709524CAE5190005CE5E /* LaunchThreePoints.swift */; };
+		0414709A24D188010005CE5E /* AnimatedPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414709924D188010005CE5E /* AnimatedPhotoViewController.swift */; };
+		0414709C24D2C1490005CE5E /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414709B24D2C1490005CE5E /* Animator.swift */; };
 		0438410C24ACF3910047B599 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438410B24ACF3910047B599 /* AppDelegate.swift */; };
 		0438410E24ACF3910047B599 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438410D24ACF3910047B599 /* SceneDelegate.swift */; };
 		0438411024ACF3910047B599 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438410F24ACF3910047B599 /* ViewController.swift */; };
@@ -35,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		0414709524CAE5190005CE5E /* LaunchThreePoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchThreePoints.swift; sourceTree = "<group>"; };
+		0414709924D188010005CE5E /* AnimatedPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedPhotoViewController.swift; sourceTree = "<group>"; };
+		0414709B24D2C1490005CE5E /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		0438410824ACF3910047B599 /* VKclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0438410B24ACF3910047B599 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0438410D24ACF3910047B599 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +108,7 @@
 				0438411424ACF3950047B599 /* Assets.xcassets */,
 				0438411624ACF3950047B599 /* LaunchScreen.storyboard */,
 				0438411924ACF3950047B599 /* Info.plist */,
+				0414709B24D2C1490005CE5E /* Animator.swift */,
 			);
 			path = VKclient;
 			sourceTree = "<group>";
@@ -134,6 +139,7 @@
 			children = (
 				04C9163C24B5D57D00722318 /* PhotoFriendsCollectionViewController.swift */,
 				04C9167024B6434B00722318 /* PhotoFriendsCell.swift */,
+				0414709924D188010005CE5E /* AnimatedPhotoViewController.swift */,
 			);
 			path = PhotoCollection;
 			sourceTree = "<group>";
@@ -260,6 +266,8 @@
 				04C9164924B5F58700722318 /* RecommendedCommunitiesTableViewController.swift in Sources */,
 				04C9163924B5C56A00722318 /* FriendsTableViewController.swift in Sources */,
 				0438410E24ACF3910047B599 /* SceneDelegate.swift in Sources */,
+				0414709A24D188010005CE5E /* AnimatedPhotoViewController.swift in Sources */,
+				0414709C24D2C1490005CE5E /* Animator.swift in Sources */,
 				048DED6D24C720890006F0B8 /* NewsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

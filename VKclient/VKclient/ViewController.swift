@@ -12,11 +12,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    
+     
      var firstPoint: UIView = UIView()
        var secondPoint: UIView = UIView()
        var thirdPoint: UIView = UIView()
-    
+ 
     
     private func checkLoginInfo() -> Bool {
           guard let loginText = loginTextField.text else { return false }
@@ -39,22 +39,22 @@ class LoginViewController: UIViewController {
     }
     
     
-      
-      override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-          
-          if identifier == "loginSegue" {
-              if checkLoginInfo() {
-                  return true
-              }
-              else {
-                  showLoginError()
-                  return false
-              }
-          }
-          
-          return true
-      }
-      
+    @IBAction func enter(_ sender: Any) {
+        guard let vc = storyboard?.instantiateViewController(identifier: "tabBarVC") else {return }
+        if checkLoginInfo() {
+            vc.transitioningDelegate = self
+                     present(vc, animated: true, completion: nil)
+                        
+                    }
+                    else {
+                        showLoginError()
+                        
+                    }
+       
+    }
+    
+    
+
       
     
   
@@ -102,6 +102,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         vkLOgo.image = UIImage.init(named: "VkLogo")
+        view.backgroundColor = .lightGray
     }
     
     
@@ -133,7 +134,7 @@ class LoginViewController: UIViewController {
         secondPoint.frame = CGRect(x: (view.frame.width - 20) / 2, y: view.frame.height - 350, width: 20, height: 20)
         thirdPoint.frame =  CGRect(x: (view.frame.width + 60 ) / 2, y: view.frame.height - 350, width: 20, height: 20)
         
-          firstPoint.backgroundColor = .gray
+        firstPoint.backgroundColor = .darkGray
         firstPoint.layer.cornerRadius = firstPoint.bounds.width / 2
           secondPoint.backgroundColor = firstPoint.backgroundColor
          secondPoint.layer.cornerRadius = firstPoint.bounds.width / 2
@@ -152,5 +153,16 @@ class LoginViewController: UIViewController {
         
       }
 
+
+  
 }
+
+
+extension LoginViewController:UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        return PushAnimator()
+        
+    }
+    }
 

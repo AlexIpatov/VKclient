@@ -14,6 +14,7 @@ class NewsTableViewController: UITableViewController {
     var newsArray = [
         News(newsLext: "Сегодня солнечно", newsPhoto: UIImage(named: "sunny"), numberOfViews: "20", authorAva: UIImage(named: "weather"), authorName: "Погода на сегодня"),
         News(newsLext: "Открытие ресторана на берегу Невы", newsPhoto: UIImage(named: "rest"), numberOfViews: "10", authorAva: UIImage(named: "community2"), authorName: "Куда сходить?")
+        
     ]
 
 

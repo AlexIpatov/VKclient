@@ -28,7 +28,7 @@ class PhotoFriendsCollectionViewController: UICollectionViewController {
     }
     
     
-    
+ 
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoFriendsCell", for: indexPath) as? PhotoFriendsCell else {fatalError()}
@@ -36,7 +36,15 @@ class PhotoFriendsCollectionViewController: UICollectionViewController {
         cell.photoFriends.image = UIImage(named: imageName)
         return cell
     }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "AnimatedFriendsPhotoViewController") as? AnimatedPhotoViewController  else { return}
+        vc.photoCollection = photoInPhotoCollection
+        vc.currentIndex = indexPath.row
+        navigationController?.pushViewController(vc, animated: true)
     
+        
+     }
+
 }
 
 extension PhotoFriendsCollectionViewController: UICollectionViewDelegateFlowLayout {

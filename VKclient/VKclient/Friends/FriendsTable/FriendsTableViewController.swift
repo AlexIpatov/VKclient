@@ -10,6 +10,7 @@ import UIKit
 
 
 class FriendsTableViewController: UITableViewController {
+    let interactiveTransition = InteractiveTransition()
     var friends = [
         User(name: "Алеша", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto),
         User(name: "Артур", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto),
@@ -123,6 +124,7 @@ class FriendsTableViewController: UITableViewController {
         
         
         vc.photoInPhotoCollection = user.photos
+        navigationController?.delegate = self
         navigationController?.pushViewController(vc, animated: true)
         
         
@@ -170,5 +172,25 @@ extension FriendsTableViewController: UISearchResultsUpdating {
             return friend.name.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()
+    }
+}
+
+
+extension FriendsTableViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if operation == .pop {
+            if navigationController.viewControllers.first != toVC {
+                interactiveTransition.viewController = toVC
+            }
+            return PopAnimator()
+        } else {
+            interactiveTransition.viewController = toVC
+            return PushAnimator()
+        }
+        
+    }
+    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+           
+           return interactiveTransition.hasStarted ? interactiveTransition : nil
     }
 }
