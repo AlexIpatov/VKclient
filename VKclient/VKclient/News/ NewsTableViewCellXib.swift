@@ -1,14 +1,14 @@
 //
-//  NewsTableViewCell.swift
+//  TableViewCell.swift
 //  VKclient
 //
-//  Created by Mac on 21.07.2020.
+//  Created by Mac on 09.08.2020.
 //  Copyright © 2020 Alexander. All rights reserved.
 //
 
 import UIKit
 
-class NewsTableViewCell: UITableViewCell {
+class  NewsTableViewCellXib: UITableViewCell {
 
     @IBOutlet weak var authorAvaView: UIView!
     @IBOutlet weak var authorAva: UIImageView!
@@ -54,3 +54,5 @@ override func prepareForReuse() {
        
    }
 }
+
+

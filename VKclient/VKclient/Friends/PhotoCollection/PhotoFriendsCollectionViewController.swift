@@ -13,14 +13,14 @@ import UIKit
 
 class PhotoFriendsCollectionViewController: UICollectionViewController {
     let itemsPerRow: CGFloat = 2
-    let sectionsInserds = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    let sectionsInserds = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
        
     }
     
-    var photoInPhotoCollection: [String]!
+    var photoInPhotoCollection: [String] = []
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoInPhotoCollection.count

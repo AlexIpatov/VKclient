@@ -13,9 +13,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
      
-     var firstPoint: UIView = UIView()
-       var secondPoint: UIView = UIView()
-       var thirdPoint: UIView = UIView()
+    // var firstPoint: UIView = UIView()
+      // var secondPoint: UIView = UIView()
+//       var thirdPoint: UIView = UIView()
  
     
     private func checkLoginInfo() -> Bool {
@@ -102,14 +102,15 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         vkLOgo.image = UIImage.init(named: "VkLogo")
-        view.backgroundColor = .lightGray
+    
     }
     
     
-    
+   
       
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+         /*
         addthreePoint()
         
         UIView.animate(withDuration: 1.1, delay: 0, options: [.repeat, .autoreverse], animations: {
@@ -127,8 +128,9 @@ class LoginViewController: UIViewController {
              
                    
                })
+          */
     }
-      
+      /*
       func addthreePoint() {
         firstPoint.frame =  CGRect(x: (view.frame.width - 100) / 2, y: view.frame.height - 350, width: 20, height: 20)
         secondPoint.frame = CGRect(x: (view.frame.width - 20) / 2, y: view.frame.height - 350, width: 20, height: 20)
@@ -154,7 +156,7 @@ class LoginViewController: UIViewController {
       }
 
 
-  
+  */
 }
 
 
