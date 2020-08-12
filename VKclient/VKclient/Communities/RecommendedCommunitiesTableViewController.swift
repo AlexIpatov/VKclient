@@ -16,13 +16,13 @@ class RecommendedCommunitiesTableViewController: UITableViewController {
            "SomeCommunity2"
        ]
        
-       
+       var name = "GeekBrains"
        
        override func viewDidLoad() {
            super.viewDidLoad()
            tableView.dataSource = self
            tableView.delegate = self
-           
+        loadGroupsSearch(token: Session.shared.token, name: name)
        }
 
     

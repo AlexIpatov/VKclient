@@ -13,9 +13,10 @@ import UIKit
 
 class PhotoFriendsCollectionViewController: UICollectionViewController {
     let itemsPerRow: CGFloat = 2
-    let sectionsInserds = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+    let sectionsInserds = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
     override func viewDidLoad() {
         super.viewDidLoad()
+          loadPhotos(token: Session.shared.token)
         collectionView.dataSource = self
        
     }

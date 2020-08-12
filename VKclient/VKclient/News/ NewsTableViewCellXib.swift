@@ -24,18 +24,18 @@ class  NewsTableViewCellXib: UITableViewCell {
 override func prepareForReuse() {
        super.prepareForReuse()
    }
-   @IBInspectable var shadowCol: UIColor = .black {
+    var shadowCol: UIColor = .black {
        didSet {
               setNeedsDisplay()
        }
    }
-   @IBInspectable var shadowOpas: Float = 0.5 {
+    var shadowOpas: Float = 0.5 {
           didSet {
                setNeedsDisplay()
           }
       }
    
-   @IBInspectable var shadowRad: CGFloat = 5 {
+    var shadowRad: CGFloat = 5 {
        didSet {
              setNeedsDisplay()
        }

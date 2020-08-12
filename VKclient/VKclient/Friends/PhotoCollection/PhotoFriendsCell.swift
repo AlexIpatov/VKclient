@@ -16,4 +16,5 @@ class PhotoFriendsCell: UICollectionViewCell {
     override func prepareForReuse() {
           super.prepareForReuse()
       }
+    
 }

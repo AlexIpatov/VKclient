@@ -16,7 +16,7 @@ struct Group {
 
 
 var groups = [
-    Group(name: "geekbrains", avatar: UIImage(named: "geekbrains")),
-    Group(name: "swiftbook", avatar: UIImage(named: "Swift"))
+    Group(name: "geekbrains", avatar: UIImage(named: "cat4")),
+    Group(name: "swiftbook", avatar: UIImage(named: "cat1"))
     
   ]

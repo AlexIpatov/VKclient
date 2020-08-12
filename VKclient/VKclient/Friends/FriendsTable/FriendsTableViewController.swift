@@ -10,6 +10,7 @@ import UIKit
 
 
 class FriendsTableViewController: UITableViewController {
+    
     let interactiveTransition = InteractiveTransition()
     var friends = [
         User(name: "Алеша", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto),
@@ -47,6 +48,7 @@ class FriendsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+          loadFriends(token: Session.shared.token)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"

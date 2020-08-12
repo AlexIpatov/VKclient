@@ -15,10 +15,10 @@ class CommunityTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadGroups(token: Session.shared.token)
         tableView.dataSource = self
         tableView.delegate = self
-        
+    
     }
 
  
@@ -48,6 +48,8 @@ class CommunityTableViewController: UITableViewController {
                
            }
        }
+    
+  
     @IBAction func addCommunity(_ sendoer: Any) {
         let alert = UIAlertController(title: "Введите название сообщества", message: nil, preferredStyle: .alert)
         alert.addTextField{(textField) in
@@ -55,6 +57,7 @@ class CommunityTableViewController: UITableViewController {
         }
         let action = UIAlertAction(title: "ОК", style: .default){[weak self, weak alert] (action) in
             guard let firstText = alert?.textFields?.first?.text else {return}
+        
             self?.addCommunity(name: firstText)
         }
         
