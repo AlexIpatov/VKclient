@@ -22,7 +22,8 @@ class RecommendedCommunitiesTableViewController: UITableViewController {
            super.viewDidLoad()
            tableView.dataSource = self
            tableView.delegate = self
-        loadGroupsSearch(token: Session.shared.token, name: name)
+           let networkService = NetworkService()
+        networkService.loadGroupsSearch(token: Session.shared.token, name: name)
        }
 
     
@@ -39,7 +40,7 @@ class RecommendedCommunitiesTableViewController: UITableViewController {
        }
        
        override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-           return 90
+           return 60
        }
       
 }

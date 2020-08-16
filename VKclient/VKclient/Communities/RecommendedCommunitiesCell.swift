@@ -22,7 +22,7 @@ class recommendedCommunitiesCell: UITableViewCell {
                    setNeedsDisplay()
             }
         }
-         var shadowOpas: Float = 0.5 {
+         var shadowOpas: Float = 0.3 {
                didSet {
                     setNeedsDisplay()
                }

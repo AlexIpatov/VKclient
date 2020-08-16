@@ -8,32 +8,35 @@
 
 import UIKit
 
-
+import Kingfisher
 class FriendsTableViewController: UITableViewController {
-    
+      private var friends = [User]()
+     var sortedFriends = [Character: [User]]()
+ 
     let interactiveTransition = InteractiveTransition()
-    var friends = [
-        User(name: "Алеша", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto),
-        User(name: "Артур", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto),
-        User(name: "Даша", avatar:  UIImage(named: "womanAva"), photos: dashaPhoto),
-        User(name: "Дмитрий", avatar: UIImage(named: "manAva"), photos: alexPhoto),
-        User(name: "Саша",avatar: UIImage(named: "manAva"), photos: alexPhoto),
-        User(name: "Сергей", avatar: UIImage(named: "manAva"), photos: alexPhoto)
-        
-        
-    ]
+   
+    func sortFriends(friends: [User]) -> [Character: [User]]  {
+         var friendsDict = [Character: [User]]()
+              
+              friends
+                .sorted { $0.first_name < $1.first_name }
+                  .forEach { friend in
+                    guard let firstChar = friend.first_name.first else { return }
+                  if var thisChar = friendsDict[firstChar] {
+                      thisChar.append(friend)
+                      friendsDict[firstChar] = thisChar
+                  } else {
+                      friendsDict[firstChar] = [friend]
+                  }
+              }
+              
+              return friendsDict
+          }
+          
     
-    var sortedFriends = [
-        [User(name: "Алеша", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto),
-          User(name: "Артур", avatar:  UIImage(named: "manAva"), photos: aleshaPhoto)],
-        [User(name: "Даша", avatar:  UIImage(named: "womanAva"), photos: dashaPhoto),
-         User(name: "Дмитрий", avatar: UIImage(named: "manAva"), photos: alexPhoto)],
-        [User(name: "Саша",avatar: UIImage(named: "manAva"), photos: alexPhoto),
-         User(name: "Сергей", avatar: UIImage(named: "manAva"), photos: alexPhoto)]
-    ]
-    
-    
-    
+   
+   
+    //searchController
     private let searchController = UISearchController(searchResultsController: nil)
     
     private var searchBarEmpty: Bool {
@@ -48,7 +51,27 @@ class FriendsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-          loadFriends(token: Session.shared.token)
+        
+        let networkService = NetworkService()
+        networkService.loadFriends(token: Session.shared.token) {
+            [weak self] result in
+            guard let self = self else { return }
+                     switch result {
+               case let .success(friends):
+                          self.friends = friends
+                     DispatchQueue.main.async {
+                                        self.tableView.reloadData()
+                                     }
+                          self.sortedFriends = self.sortFriends(friends: friends)
+                       
+                        
+                        case let .failure(error):
+                         print(error)
+        }
+        }
+       
+   
+        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -60,56 +83,48 @@ class FriendsTableViewController: UITableViewController {
         tableView.register(UINib(nibName: "SectionHeaderForFriendsTableView", bundle: nil), forHeaderFooterViewReuseIdentifier: "headerFriendsTable")
     }
     
-    
+    //---------------------
     override func numberOfSections(in tableView: UITableView) -> Int {
         if isFiltering {
             return 1
         } else {
-            return sortedFriends.count
+            return sortedFriends.keys.count
         }
     }
     
     override  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as? FriendsCell else {fatalError()}
+        
         var user: User
+       
+  
         if isFiltering {
             user = filterFriends[indexPath.row]
         } else {
-            user = sortedFriends[indexPath.section][indexPath.row]
+           let firstChar = sortedFriends.keys.sorted()[indexPath.section]
+                   let friends = sortedFriends[firstChar]!
+                   user = friends[indexPath.row]
         }
+        let urlImg = user.photo_100
+        cell.avaImage.kf.setImage(with: URL(string: urlImg))
         
-        cell.avaImage.image = user.avatar
-        cell.titleLabel.text = String(user.name)
+        cell.titleLabel.text = String(user.first_name + " " + user.last_name)
         
         return cell
         
     }
-    
-    
+   
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        
-        var charFriends = friends.map{$0.name.first!}
-        
-        var seen: Set<Character> = []
-        charFriends = charFriends.filter {
-            if seen.contains($0) {
-                return false
-            }
-            else {
-                seen.insert($0)
-                return true
-            }
-        }
-        let  section = charFriends[section]
+        let  section = sortedFriends.keys.sorted()[section]
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerFriendsTable") as? SectionHeaderForFriendsTableView else {fatalError()}
         if isFiltering {
             header.Char.text = "Результаты поиска:"
         } else {
             header.Char.text = String(section)
         }
-        
+       
         return header
     }
     
@@ -117,15 +132,19 @@ class FriendsTableViewController: UITableViewController {
         guard let vc = storyboard?.instantiateViewController(withIdentifier: "friendsPhotoVC") as? PhotoFriendsCollectionViewController else {
             return
         }
-        var user: User
-        if isFiltering {
-            user = filterFriends[indexPath.row]
-        } else {
-            user = sortedFriends[indexPath.section][indexPath.row]
-        }
+       var user: User
+       
+        
+         if isFiltering {
+               user = filterFriends[indexPath.row]
+              } else {
+                 let firstChar = sortedFriends.keys.sorted()[indexPath.section]
+                         let friends = sortedFriends[firstChar]!
+                          user = friends[indexPath.row]
+              }
         
         
-        vc.photoInPhotoCollection = user.photos
+        vc.userID = user.id
         navigationController?.delegate = self
         navigationController?.pushViewController(vc, animated: true)
         
@@ -133,6 +152,8 @@ class FriendsTableViewController: UITableViewController {
         
         
     }
+    
+    
     private var filterFriends = [User]()
     
     
@@ -140,29 +161,20 @@ class FriendsTableViewController: UITableViewController {
         if isFiltering {
             return filterFriends.count
         } else {
-            return sortedFriends[section].count
+            let keysSorted = sortedFriends.keys.sorted()
+                  return sortedFriends[keysSorted[section]]?.count ?? 0
+          
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 60
     }
     
-    /*
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     friends.remove(at: indexPath.row)
-     
-     tableView.deleteRows(at: [indexPath], with: .right)
-     
-     
-     }
-     }
-     
-     */
     
     
 }
+// search
 extension FriendsTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
@@ -171,11 +183,14 @@ extension FriendsTableViewController: UISearchResultsUpdating {
     
     private func filterContentForSearchText(_ searchText: String) {
         filterFriends = friends.filter({(friend: User) -> Bool in
-            return friend.name.lowercased().contains(searchText.lowercased())
+            return friend.first_name.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()
     }
 }
+
+
+// animator
 
 
 extension FriendsTableViewController: UINavigationControllerDelegate {

@@ -7,8 +7,16 @@
 //
 
 import UIKit
-
-
-let alexPhoto = ["nature1","nature2", "nature3", "nature4"]
-let dashaPhoto = ["cat1", "cat2", "cat3", "cat4", "cat5", "cat6", "cat7" ]
-let aleshaPhoto = dashaPhoto + alexPhoto
+import SwiftyJSON
+class Photo {
+  
+    let url: String
+ init(from json: JSON) {
+    
+  
+    
+    self.url = json["sizes"][6]["url"].stringValue
+    
+}
+}
+ 

@@ -10,7 +10,7 @@ import UIKit
 
 class AnimatedPhotoViewController: UIViewController {
     var currentIndex: Int = 0
-    var photoCollection: [String] = []
+    var photoCollection = [Photo]()
     private var interectiveAnimator: UIViewPropertyAnimator!
     private var currentSign = 0
     private var percent: CGFloat = 0
@@ -38,7 +38,7 @@ class AnimatedPhotoViewController: UIViewController {
             imgView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
              imgView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
              imgView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.97),
-            imgView.heightAnchor.constraint(equalTo: view.widthAnchor)
+            imgView.heightAnchor.constraint(equalTo: view.heightAnchor)
             
             ])
     }
@@ -60,18 +60,21 @@ class AnimatedPhotoViewController: UIViewController {
        
     
     private func setImage() {
-        let fImage = photoCollection[currentIndex]
+         let fImageURL = photoCollection[currentIndex].url
+     
         var nextIndex = currentIndex + 1
-        var bImage: UIImage?
+          var bImageURL = ""
         if currentSign > 0 {
             nextIndex = currentIndex - 1
         }
         
         if nextIndex < photoCollection.count - 1, nextIndex >= 0 {
-            bImage = UIImage(named: photoCollection[nextIndex])
+          
+          bImageURL = photoCollection[nextIndex].url
+         
         }
-        firstImage.image = UIImage(named: fImage)
-        secondImage.image = bImage
+        firstImage.kf.setImage(with: URL(string: fImageURL))
+         secondImage.kf.setImage(with: URL(string: bImageURL))
         secondImage.alpha = 0
     }
     

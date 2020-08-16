@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Kingfisher
 
 class CommunitiesCell: UITableViewCell {
     
@@ -26,7 +26,7 @@ class CommunitiesCell: UITableViewCell {
                   setNeedsDisplay()
            }
        }
-       var shadowOpas: Float = 0.5 {
+       var shadowOpas: Float = 0.3 {
               didSet {
                    setNeedsDisplay()
               }

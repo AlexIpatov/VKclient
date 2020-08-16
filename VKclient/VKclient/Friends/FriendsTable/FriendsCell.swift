@@ -23,13 +23,13 @@ class FriendsCell: UITableViewCell {
                setNeedsDisplay()
         }
     }
-     var shadowOpas: Float = 0.5 {
+     var shadowOpas: Float = 0.3 {
            didSet {
                 setNeedsDisplay()
            }
        }
     
-     var shadowRad: CGFloat = 5 {
+     var shadowRad: CGFloat = 4 {
         didSet {
               setNeedsDisplay()
         }

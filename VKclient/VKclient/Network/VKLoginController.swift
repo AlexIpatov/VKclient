@@ -17,9 +17,17 @@ class VKLoginController: UIViewController {
         }
     }
     
+    
+    func removeCookies(){
+    let cookieJar = HTTPCookieStorage.shared
+    for cookie in cookieJar.cookies! {
+        cookieJar.deleteCookie(cookie)
+    }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        removeCookies()
         var components = URLComponents()
         components.scheme = "https"
         components.host = "oauth.vk.com"
@@ -66,12 +74,15 @@ extension VKLoginController: WKNavigationDelegate {
         }
         
         Session.shared.token = token
-    
+        Session.shared.userId = Int(userIdString)!
         performSegue(withIdentifier: "Run the App", sender: nil)
         
       
         
         decisionHandler(.cancel)
-    }
-}
+       
+        }
+        }
+    
+
 

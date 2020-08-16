@@ -119,13 +119,11 @@
 				04C9167224B6472100722318 /* Model */,
 				0438410B24ACF3910047B599 /* AppDelegate.swift */,
 				0438410D24ACF3910047B599 /* SceneDelegate.swift */,
-				046B3A1024E2B76100FA9B2E /* VKLoginController.swift */,
+				04B90B3924E53770009CBB1E /* Network */,
 				0438411424ACF3950047B599 /* Assets.xcassets */,
 				0438411624ACF3950047B599 /* LaunchScreen.storyboard */,
 				0438411924ACF3950047B599 /* Info.plist */,
 				0414709B24D2C1490005CE5E /* Animator.swift */,
-				0496E18224DEE6370077BADA /* Session.swift */,
-				046B3A0E24E29CDF00FA9B2E /* NetworkService.swift */,
 				0438410F24ACF3910047B599 /* LoginViewController.swift */,
 			);
 			path = VKclient;
@@ -145,9 +143,9 @@
 			isa = PBXGroup;
 			children = (
 				04C9164824B5F58700722318 /* RecommendedCommunitiesTableViewController.swift */,
+				04C9164A24B5F68E00722318 /* RecommendedCommunitiesCell.swift */,
 				04C9164024B5D8B300722318 /* CommunityTableViewController.swift */,
 				04C9164624B5ED2900722318 /* CommunityCell.swift */,
-				04C9164A24B5F68E00722318 /* RecommendedCommunitiesCell.swift */,
 			);
 			path = Communities;
 			sourceTree = "<group>";
@@ -181,6 +179,16 @@
 				0496E18524E001670077BADA /*  NewsTableViewCellXib.xib */,
 			);
 			path = News;
+			sourceTree = "<group>";
+		};
+		04B90B3924E53770009CBB1E /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				046B3A1024E2B76100FA9B2E /* VKLoginController.swift */,
+				046B3A0E24E29CDF00FA9B2E /* NetworkService.swift */,
+				0496E18224DEE6370077BADA /* Session.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		04C9167224B6472100722318 /* Model */ = {
