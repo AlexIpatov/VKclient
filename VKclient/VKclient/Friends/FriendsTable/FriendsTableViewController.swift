@@ -10,32 +10,32 @@ import UIKit
 
 import Kingfisher
 class FriendsTableViewController: UITableViewController {
-      private var friends = [User]()
-     var sortedFriends = [Character: [User]]()
- 
-    let interactiveTransition = InteractiveTransition()
-   
-    func sortFriends(friends: [User]) -> [Character: [User]]  {
-         var friendsDict = [Character: [User]]()
-              
-              friends
-                .sorted { $0.first_name < $1.first_name }
-                  .forEach { friend in
-                    guard let firstChar = friend.first_name.first else { return }
-                  if var thisChar = friendsDict[firstChar] {
-                      thisChar.append(friend)
-                      friendsDict[firstChar] = thisChar
-                  } else {
-                      friendsDict[firstChar] = [friend]
-                  }
-              }
-              
-              return friendsDict
-          }
-          
+    private var friends = [User]()
+    var sortedFriends = [Character: [User]]()
     
-   
-   
+    let interactiveTransition = InteractiveTransition()
+    
+    func sortFriends(friends: [User]) -> [Character: [User]]  {
+        var friendsDict = [Character: [User]]()
+        
+        friends
+            .sorted { $0.first_name < $1.first_name }
+            .forEach { friend in
+                guard let firstChar = friend.first_name.first else { return }
+                if var thisChar = friendsDict[firstChar] {
+                    thisChar.append(friend)
+                    friendsDict[firstChar] = thisChar
+                } else {
+                    friendsDict[firstChar] = [friend]
+                }
+        }
+        
+        return friendsDict
+    }
+    
+    
+    
+    
     //searchController
     private let searchController = UISearchController(searchResultsController: nil)
     
@@ -56,21 +56,21 @@ class FriendsTableViewController: UITableViewController {
         networkService.loadFriends(token: Session.shared.token) {
             [weak self] result in
             guard let self = self else { return }
-                     switch result {
-               case let .success(friends):
-                          self.friends = friends
-                     DispatchQueue.main.async {
-                                        self.tableView.reloadData()
-                                     }
-                          self.sortedFriends = self.sortFriends(friends: friends)
-                       
-                        
-                        case let .failure(error):
-                         print(error)
+            switch result {
+            case let .success(friends):
+                self.friends = friends
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                self.sortedFriends = self.sortFriends(friends: friends)
+                
+                
+            case let .failure(error):
+                print(error)
+            }
         }
-        }
-       
-   
+        
+        
         
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -96,14 +96,14 @@ class FriendsTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell") as? FriendsCell else {fatalError()}
         
         var user: User
-       
-  
+        
+        
         if isFiltering {
             user = filterFriends[indexPath.row]
         } else {
-           let firstChar = sortedFriends.keys.sorted()[indexPath.section]
-                   let friends = sortedFriends[firstChar]!
-                   user = friends[indexPath.row]
+            let firstChar = sortedFriends.keys.sorted()[indexPath.section]
+            let friends = sortedFriends[firstChar]!
+            user = friends[indexPath.row]
         }
         let urlImg = user.photo_100
         cell.avaImage.kf.setImage(with: URL(string: urlImg))
@@ -113,7 +113,7 @@ class FriendsTableViewController: UITableViewController {
         return cell
         
     }
-   
+    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -124,7 +124,7 @@ class FriendsTableViewController: UITableViewController {
         } else {
             header.Char.text = String(section)
         }
-       
+        
         return header
     }
     
@@ -132,16 +132,16 @@ class FriendsTableViewController: UITableViewController {
         guard let vc = storyboard?.instantiateViewController(withIdentifier: "friendsPhotoVC") as? PhotoFriendsCollectionViewController else {
             return
         }
-       var user: User
-       
+        var user: User
         
-         if isFiltering {
-               user = filterFriends[indexPath.row]
-              } else {
-                 let firstChar = sortedFriends.keys.sorted()[indexPath.section]
-                         let friends = sortedFriends[firstChar]!
-                          user = friends[indexPath.row]
-              }
+        
+        if isFiltering {
+            user = filterFriends[indexPath.row]
+        } else {
+            let firstChar = sortedFriends.keys.sorted()[indexPath.section]
+            let friends = sortedFriends[firstChar]!
+            user = friends[indexPath.row]
+        }
         
         
         vc.userID = user.id
@@ -162,8 +162,8 @@ class FriendsTableViewController: UITableViewController {
             return filterFriends.count
         } else {
             let keysSorted = sortedFriends.keys.sorted()
-                  return sortedFriends[keysSorted[section]]?.count ?? 0
-          
+            return sortedFriends[keysSorted[section]]?.count ?? 0
+            
         }
     }
     
@@ -207,7 +207,7 @@ extension FriendsTableViewController: UINavigationControllerDelegate {
         
     }
     func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-           
-           return interactiveTransition.hasStarted ? interactiveTransition : nil
+        
+        return interactiveTransition.hasStarted ? interactiveTransition : nil
     }
 }

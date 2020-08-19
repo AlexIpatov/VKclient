@@ -8,15 +8,21 @@
 
 import UIKit
 import SwiftyJSON
-class Photo {
-  
-    let url: String
- init(from json: JSON) {
+import RealmSwift
+class Photo: Object, Decodable {
+    @objc dynamic var sizesCount: Int = 0
+    @objc dynamic var url: String = ""
     
-  
-    
-    self.url = json["sizes"][6]["url"].stringValue
-    
+    convenience init(from json: JSON) {
+        self.init()
+        self.sizesCount = json["sizes"].count
+        self.url = json["sizes"][sizesCount-1]["url"].stringValue
+        
+    }
+    convenience init(sizesCount: Int, url: String) {
+        self.init()
+        self.sizesCount = sizesCount
+        self.url = url
+    }
 }
-}
- 
+

@@ -184,8 +184,8 @@
 		04B90B3924E53770009CBB1E /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				046B3A1024E2B76100FA9B2E /* VKLoginController.swift */,
 				046B3A0E24E29CDF00FA9B2E /* NetworkService.swift */,
+				046B3A1024E2B76100FA9B2E /* VKLoginController.swift */,
 				0496E18224DEE6370077BADA /* Session.swift */,
 			);
 			path = Network;

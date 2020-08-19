@@ -8,70 +8,27 @@
 
 import Foundation
 import SwiftyJSON
-class Group {
-     
-let id: Int
-   let name: String
-    let photo_200: String
+import RealmSwift
+
+class Group: Object, Decodable {
     
- init(from json: JSON) {
-   self.id = json["id"].intValue
- self.name = json["name"].stringValue
-self.photo_200 = json["photo_200"].stringValue
+    @objc dynamic var id: Int = 0
+    @objc dynamic var name: String = ""
+    @objc dynamic var photo_200: String = ""
     
-}
-}
- 
-
-
-/*
-
-
-// MARK: - Group
-struct Group: Codable {
-    let response: Response
-}
-
-// MARK: - Response
-struct Response: Codable {
-    let items: [Item]
-    let count: Int
-}
-
-// MARK: - Item
-struct Item: Codable {
-    let isAdmin: Int
-    let name: String
-    let type: TypeEnum
-    let screenName: String
-    let isAdvertiser: Int
-    let photo50, photo100: String
-    let isMember, id: Int
-    let photo200: String
-    let isClosed: Int
-    let adminLevel: Int?
-
-    enum CodingKeys: String, CodingKey {
-        case isAdmin
-        case name, type
-        case screenName
-        case isAdvertiser
-        case photo50
-        case photo100
-        case isMember
-        case id
-        case photo200
-        case isClosed
-        case adminLevel
+    convenience init(id: Int, name: String, photo_200: String) {
+        self.init()
+        self.id = id
+        self.name = name
+        self.photo_200 = photo_200
     }
+    
+    convenience init(from json: JSON) {
+        self.init()
+        self.id = json["id"].intValue
+        self.name = json["name"].stringValue
+        self.photo_200 = json["photo_200"].stringValue
+        
+    }
+    
 }
-
-enum TypeEnum: String, Codable {
-    case event = "event"
-    case group = "group"
-    case page = "page"
-}
-
-
-
-*/

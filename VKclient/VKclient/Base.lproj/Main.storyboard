@@ -387,7 +387,7 @@
                                 <action selector="addCommunity:" destination="dWH-ZM-zqp" id="dQx-WY-3qj"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Рекомендуемые" id="leP-hi-mrq">
+                        <barButtonItem key="rightBarButtonItem" image="magnifyingglass" catalog="system" id="leP-hi-mrq">
                             <connections>
                                 <segue destination="ES7-Fa-imO" kind="show" id="lcd-pB-Zds"/>
                             </connections>
@@ -398,11 +398,11 @@
             </objects>
             <point key="canvasLocation" x="3596" y="354.67980295566502"/>
         </scene>
-        <!--Рекомендуемые сообщества-->
+        <!--Поиск по сообществам-->
         <scene sceneID="D5Q-aW-7Pq">
             <objects>
                 <tableViewController modalPresentationStyle="fullScreen" id="ES7-Fa-imO" customClass="RecommendedCommunitiesTableViewController" customModule="VKclient" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0q9-9Q-rXX">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0q9-9Q-rXX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -415,7 +415,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxk-5i-IjV">
-                                            <rect key="frame" x="77" y="15" width="56" height="30"/>
+                                            <rect key="frame" x="77" y="15" width="221" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -446,6 +446,7 @@
                                     <constraints>
                                         <constraint firstItem="Fxk-5i-IjV" firstAttribute="centerY" secondItem="e1T-bL-jHq" secondAttribute="centerY" id="8bJ-Xd-nnB"/>
                                         <constraint firstItem="mmf-KE-tRp" firstAttribute="centerY" secondItem="e1T-bL-jHq" secondAttribute="centerY" id="KQr-xk-zYw"/>
+                                        <constraint firstItem="Fxk-5i-IjV" firstAttribute="centerX" secondItem="e1T-bL-jHq" secondAttribute="centerX" id="Kjh-ne-Vs1"/>
                                         <constraint firstItem="Fxk-5i-IjV" firstAttribute="leading" secondItem="mmf-KE-tRp" secondAttribute="trailing" constant="12" id="TGj-Mx-3yJ"/>
                                         <constraint firstItem="mmf-KE-tRp" firstAttribute="leading" secondItem="e1T-bL-jHq" secondAttribute="leading" constant="15" id="hub-fH-VIP"/>
                                     </constraints>
@@ -462,7 +463,7 @@
                             <outlet property="delegate" destination="ES7-Fa-imO" id="AkA-CW-aCT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Рекомендуемые сообщества" id="B6R-ET-2bg"/>
+                    <navigationItem key="navigationItem" title="Поиск по сообществам" id="B6R-ET-2bg"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GUO-6M-UhI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -551,6 +552,7 @@
         <image name="alexPhoto" width="100" height="100"/>
         <image name="doc.richtext" catalog="system" width="115" height="128"/>
         <image name="geekbrains" width="256" height="256"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.3.fill" catalog="system" width="128" height="61"/>
     </resources>

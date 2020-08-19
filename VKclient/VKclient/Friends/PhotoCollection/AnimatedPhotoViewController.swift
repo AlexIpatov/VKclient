@@ -22,64 +22,64 @@ class AnimatedPhotoViewController: UIViewController {
         view.isUserInteractionEnabled = true
         return view
     }()
-  private let secondImage: UIImageView = {
-         let view = UIImageView()
-    view.contentMode = .scaleAspectFit
-         view.clipsToBounds = true
-         view.translatesAutoresizingMaskIntoConstraints = false
+    private let secondImage: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         
-         return view
-     }()
+        return view
+    }()
     
     
     private func layout(imgView: UIImageView) {
         view.addSubview(imgView)
         NSLayoutConstraint.activate([
             imgView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-             imgView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-             imgView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.97),
+            imgView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imgView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.97),
             imgView.heightAnchor.constraint(equalTo: view.heightAnchor)
             
-            ])
+        ])
     }
-   
-   
-     
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-      layout(imgView: secondImage)
-    layout(imgView: firstImage)
-    setImage()
+        layout(imgView: secondImage)
+        layout(imgView: firstImage)
+        setImage()
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
         firstImage.addGestureRecognizer(gesture )
-          
-        }
-   
         
-       
+    }
+    
+    
+    
     
     private func setImage() {
-         let fImageURL = photoCollection[currentIndex].url
-     
+        let fImageURL = photoCollection[currentIndex].url
+        
         var nextIndex = currentIndex + 1
-          var bImageURL = ""
+        var bImageURL = ""
         if currentSign > 0 {
             nextIndex = currentIndex - 1
         }
         
         if nextIndex < photoCollection.count - 1, nextIndex >= 0 {
-          
-          bImageURL = photoCollection[nextIndex].url
-         
+            
+            bImageURL = photoCollection[nextIndex].url
+            
         }
         firstImage.kf.setImage(with: URL(string: fImageURL))
-         secondImage.kf.setImage(with: URL(string: bImageURL))
+        secondImage.kf.setImage(with: URL(string: bImageURL))
         secondImage.alpha = 0
     }
     
     
-
+    
     private func initAnimator() {
         firstImage.alpha = 1.0
         secondImage.alpha = 0.0
@@ -89,10 +89,10 @@ class AnimatedPhotoViewController: UIViewController {
         interectiveAnimator = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
             let width = CGFloat(self.currentSign) * self.view.frame.width
             let widthTransform = CGAffineTransform(translationX: width , y: 0)
-      let angle = CGFloat(self.currentSign) * 0.8
+            let angle = CGFloat(self.currentSign) * 0.8
             let angleTransform = CGAffineTransform(rotationAngle: angle)
             self.firstImage.transform = angleTransform.concatenating(widthTransform)
-           // self.firstImage.transform = widthTransform
+            // self.firstImage.transform = widthTransform
             self.firstImage.alpha = 0.0
             self.secondImage.alpha = 1.0
             self.secondImage.transform = .identity
@@ -148,10 +148,10 @@ class AnimatedPhotoViewController: UIViewController {
                 currentIndex += currentSign * -1
                 interectiveAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
             }
-            default:
-                     break
+        default:
+            break
             
         }
-       
+        
     }
 }
