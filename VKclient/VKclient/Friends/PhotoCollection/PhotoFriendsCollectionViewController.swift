@@ -27,7 +27,6 @@ class PhotoFriendsCollectionViewController: UICollectionViewController {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
-                
             case let .failure(error):
                 print(error)
             }

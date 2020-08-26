@@ -31,6 +31,9 @@ class  User: Object, Decodable {
         self.last_name = last_name
         self.photo_100 = photo_100
     }
+    override class func primaryKey() -> String? {
+      "id"
+      }
     
 }
 

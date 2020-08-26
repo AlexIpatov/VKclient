@@ -15,6 +15,7 @@
 		0438411324ACF3910047B599 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0438411124ACF3910047B599 /* Main.storyboard */; };
 		0438411524ACF3950047B599 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0438411424ACF3950047B599 /* Assets.xcassets */; };
 		0438411824ACF3950047B599 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0438411624ACF3950047B599 /* LaunchScreen.storyboard */; };
+		044164C624EFB5D500EF3D30 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044164C524EFB5D500EF3D30 /* RealmManager.swift */; };
 		046B3A0F24E29CDF00FA9B2E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B3A0E24E29CDF00FA9B2E /* NetworkService.swift */; };
 		046B3A1124E2B76100FA9B2E /* VKLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B3A1024E2B76100FA9B2E /* VKLoginController.swift */; };
 		046B3A1324E2BEFC00FA9B2E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046B3A1224E2BEFC00FA9B2E /* WebKit.framework */; };
@@ -51,6 +52,7 @@
 		0438411424ACF3950047B599 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0438411724ACF3950047B599 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0438411924ACF3950047B599 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		044164C524EFB5D500EF3D30 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		046B3A0E24E29CDF00FA9B2E /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		046B3A1024E2B76100FA9B2E /* VKLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VKLoginController.swift; sourceTree = "<group>"; };
 		046B3A1224E2BEFC00FA9B2E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -119,6 +121,7 @@
 				04C9167224B6472100722318 /* Model */,
 				0438410B24ACF3910047B599 /* AppDelegate.swift */,
 				0438410D24ACF3910047B599 /* SceneDelegate.swift */,
+				044164C724F2990600EF3D30 /* Realm */,
 				04B90B3924E53770009CBB1E /* Network */,
 				0438411424ACF3950047B599 /* Assets.xcassets */,
 				0438411624ACF3950047B599 /* LaunchScreen.storyboard */,
@@ -127,6 +130,14 @@
 				0438410F24ACF3910047B599 /* LoginViewController.swift */,
 			);
 			path = VKclient;
+			sourceTree = "<group>";
+		};
+		044164C724F2990600EF3D30 /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				044164C524EFB5D500EF3D30 /* RealmManager.swift */,
+			);
+			path = Realm;
 			sourceTree = "<group>";
 		};
 		048DED5D24C706820006F0B8 /* Friends */ = {
@@ -361,6 +372,7 @@
 				0414709A24D188010005CE5E /* AnimatedPhotoViewController.swift in Sources */,
 				0414709C24D2C1490005CE5E /* Animator.swift in Sources */,
 				0496E18624E001670077BADA /*  NewsTableViewCellXib.swift in Sources */,
+				044164C624EFB5D500EF3D30 /* RealmManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

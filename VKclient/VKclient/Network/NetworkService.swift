@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
-import RealmSwift
+
 class NetworkService {
     static let session: Alamofire.Session = {
         let configuration = URLSessionConfiguration.default
@@ -25,13 +25,6 @@ class NetworkService {
     
     
     
-    private lazy var realm: Realm? = {
-        #if DEBUG
-        print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
-        #endif
-        
-        return try? Realm()
-    }()
     
     func loadGroups(token: String, completion: ((Result<[Group], Error>) -> Void)? = nil) {
         
@@ -51,7 +44,8 @@ class NetworkService {
                 let groupsJSONs = json["response"]["items"].arrayValue
                 
                 let groups = groupsJSONs.map { Group(from: $0) }
-                self.saveGroups(groups)
+                try? RealmManager.shared?.add(objects: groups)
+           
                 completion?(.success(groups))
                 
             case .failure(let error):
@@ -80,7 +74,7 @@ class NetworkService {
                 let userJSONs = json["response"]["items"].arrayValue
                 
                 let friends = userJSONs.map { User(from: $0) }
-                self.saveUsers(friends)
+                try? RealmManager.shared?.add(objects: friends)
                 completion?(.success(friends))
                 
             case .failure(let error):
@@ -106,9 +100,10 @@ class NetworkService {
             case .success(let data):
                 let json = JSON(data)
                 let photosJSONs = json["response"]["items"].arrayValue
+                print(photosJSONs)
                 
                 let photos = photosJSONs.map { Photo(from: $0) }
-                self.savePhotos(photos)
+
                 completion?(.success(photos))
                 
             case .failure(let error):
@@ -147,46 +142,5 @@ class NetworkService {
     }
     
     
-    
-    func saveGroups(_ groups: [Group]) {
-        
-        do {
-            let realm = try Realm()
-            try? realm.write{
-                realm.add(groups)
-            }
-            print(realm.objects(Group.self))
-            
-        } catch {
-            
-            print(error)
-        }
-    }
-    
-    func savePhotos(_ photos: [Photo]) {
-        
-      
-        do {
-            let realm = try Realm()
-            try? realm.write{
-                realm.add(photos)
-            }
-            print(realm.objects(Photo.self))
-        } catch {
-            print(error)
-        }
-    }
-    func saveUsers(_ users: [User]) {
-        
-        do {
-            let realm = try Realm()
-            try? realm.write{
-                realm.add(users)
-            }
-            print(realm.objects(User.self))
-        } catch {
-            print(error)
-        }
-    }
-    
+   
 }

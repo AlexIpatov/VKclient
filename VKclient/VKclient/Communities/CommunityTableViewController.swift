@@ -10,8 +10,13 @@ import UIKit
 import Kingfisher
 import RealmSwift
 class CommunityTableViewController: UITableViewController {
-    
-    private var groups = [Group]()
+  
+
+       
+    private var groups: Results<Group>? {
+        let groups: Results<Group>? = realmManager?.getObjects()
+        return groups
+    }
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchBarEmpty: Bool {
         guard let text = searchController.searchBar.text else { return false}
@@ -21,26 +26,32 @@ class CommunityTableViewController: UITableViewController {
         return searchController.isActive && !searchBarEmpty
     }
     
+    private let networkService = NetworkService.shared
+    private let realmManager = RealmManager.shared
+
+   
     
-    
+    func loadData(completion: (() -> Void)? = nil){
+        networkService.loadGroups(token: Session.shared.token)
+             { [weak self] result in
+                 guard let self = self else { return }
+                 switch result {
+                 case let .success(groups):
+                     DispatchQueue.main.async {
+                         try? self.realmManager?.add(objects: groups)
+                         self.tableView.reloadData()
+                        completion?()
+                     }
+                     
+                 case let .failure(error):
+                     print(error)
+                 }
+             }
+    }
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-        let networkService = NetworkService()
-        networkService.loadGroups(token: Session.shared.token)
-        { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(groups):
-                self.groups = groups
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                
-            case let .failure(error):
-                print(error)
-            }
-        }
-        
+        loadData()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -48,21 +59,34 @@ class CommunityTableViewController: UITableViewController {
         definesPresentationContext = true
         tableView.dataSource = self
         tableView.delegate = self
+       
+     
+            
+        
     }
     
+  
+
     
+    
+    @objc private func refresh(_ sender: UIRefreshControl){
+           try? realmManager?.deleteAll()
+            loadData() { [weak self] in
+                self?.refreshControl?.endRefreshing()
+                   }
+       }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommunityCell") as? CommunitiesCell else {fatalError()}
-        var group: Group
+        var group: Group?
         
         if isFiltering {
             group = filterGroups[indexPath.row]
         } else {
-            group = groups[indexPath.row]
+            group = groups?[indexPath.row]
         }
-        cell.communityName.text = group.name
-        let urlImg = group.photo_200
-        cell.communityImage.kf.setImage(with: URL(string: urlImg))
+        cell.communityName.text = group?.name
+        let urlImg = group?.photo_200
+        cell.communityImage.kf.setImage(with: URL(string: urlImg!))
         
         return cell
         
@@ -72,7 +96,7 @@ class CommunityTableViewController: UITableViewController {
         if isFiltering {
             return filterGroups.count
         } else {
-            return groups.count
+            return groups?.count ?? 0
         }
     }
     
@@ -81,7 +105,7 @@ class CommunityTableViewController: UITableViewController {
         return 60
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+   /* override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
             groups.remove(at: indexPath.row)
@@ -92,7 +116,7 @@ class CommunityTableViewController: UITableViewController {
     }
     
     
-    /*    @IBAction func addCommunity(_ sendoer: Any) {
+        @IBAction func addCommunity(_ sendoer: Any) {
      let alert = UIAlertController(title: "Введите название сообщества", message: nil, preferredStyle: .alert)
      alert.addTextField{(textField) in
      textField.placeholder = "Название"
@@ -123,7 +147,7 @@ extension CommunityTableViewController: UISearchResultsUpdating {
         filterContentForSearchText(searchController.searchBar.text!)
     }
     private func filterContentForSearchText(_ searchText: String) {
-        filterGroups = groups.filter({(group: Group) -> Bool in
+        filterGroups = groups!.filter({(group: Group) -> Bool in
             return group.name.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()

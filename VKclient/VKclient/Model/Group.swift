@@ -30,5 +30,8 @@ class Group: Object, Decodable {
         self.photo_200 = json["photo_200"].stringValue
         
     }
+    override class func primaryKey() -> String? {
+    "id"
+    }
     
 }

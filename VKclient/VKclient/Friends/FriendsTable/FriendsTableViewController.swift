@@ -7,10 +7,13 @@
 //
 
 import UIKit
-
+import RealmSwift
 import Kingfisher
 class FriendsTableViewController: UITableViewController {
-    private var friends = [User]()
+    private var friends: Results<User>? {
+        let friends: Results<User>? = realmManager?.getObjects()
+        return friends
+    }
     var sortedFriends = [Character: [User]]()
     
     let interactiveTransition = InteractiveTransition()
@@ -46,31 +49,33 @@ class FriendsTableViewController: UITableViewController {
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarEmpty
     }
+    let networkService = NetworkService.shared
+     private let realmManager = RealmManager.shared
     
-    
-    
+    private func loadData() {
+        networkService.loadFriends(token: Session.shared.token) {
+                 [weak self] result in
+                 guard let self = self else { return }
+                 switch result {
+                 case let .success(friends):
+                     DispatchQueue.main.async {
+                         try? self.realmManager?.add(objects: friends)
+                         self.tableView.reloadData()
+                       
+                     }
+                      self.sortedFriends = self.sortFriends(friends: friends)
+                     
+                     
+                 case let .failure(error):
+                     print(error)
+                 }
+             }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
         
-        let networkService = NetworkService()
-        networkService.loadFriends(token: Session.shared.token) {
-            [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(friends):
-                self.friends = friends
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                self.sortedFriends = self.sortFriends(friends: friends)
-                
-                
-            case let .failure(error):
-                print(error)
-            }
-        }
-        
-        
+       
         
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -182,7 +187,7 @@ extension FriendsTableViewController: UISearchResultsUpdating {
     
     
     private func filterContentForSearchText(_ searchText: String) {
-        filterFriends = friends.filter({(friend: User) -> Bool in
+        filterFriends = friends!.filter({(friend: User) -> Bool in
             return friend.first_name.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()
