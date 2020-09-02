@@ -13,7 +13,8 @@ class Photo: Object, Decodable {
     @objc dynamic var sizesCount: Int = 0
     @objc dynamic var url: String = ""
     @objc dynamic var owner_id: String = ""
-    
+
+
     convenience init(from json: JSON) {
         self.init()
         self.sizesCount = json["sizes"].count

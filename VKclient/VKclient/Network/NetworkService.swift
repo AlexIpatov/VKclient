@@ -100,10 +100,9 @@ class NetworkService {
             case .success(let data):
                 let json = JSON(data)
                 let photosJSONs = json["response"]["items"].arrayValue
-                print(photosJSONs)
                 
                 let photos = photosJSONs.map { Photo(from: $0) }
-
+              try? RealmManager.shared?.add(objects: photos)
                 completion?(.success(photos))
                 
             case .failure(let error):

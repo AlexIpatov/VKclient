@@ -14,7 +14,7 @@ class FriendsTableViewController: UITableViewController {
         let friends: Results<User>? = realmManager?.getObjects()
         return friends
     }
-    var sortedFriends = [Character: [User]]()
+   var sortedFriends = [Character: [User]]()
     
     let interactiveTransition = InteractiveTransition()
     
@@ -32,7 +32,6 @@ class FriendsTableViewController: UITableViewController {
                     friendsDict[firstChar] = [friend]
                 }
         }
-        
         return friendsDict
     }
     
@@ -63,20 +62,50 @@ class FriendsTableViewController: UITableViewController {
                          self.tableView.reloadData()
                        
                      }
-                      self.sortedFriends = self.sortFriends(friends: friends)
-                     
+                    
                      
                  case let .failure(error):
                      print(error)
                  }
              }
     }
+    private var friendsNotificationToken: NotificationToken?
     override func viewDidLoad() {
         super.viewDidLoad()
+
         loadData()
-        
-       
-        
+        sortedFriends = sortFriends(friends: Array(friends!))
+     /*
+      friendsNotificationToken = friends?.observe  { [weak self] change in
+                  switch change {
+                  case .initial:
+                    print("initial")
+                  case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
+                      #if DEBUG
+                      print("""
+                          New count: \(results.count)
+                          Deletions: \(deletions)
+                          Insertions: \(insertions)
+                          Modifications: \(modifications)
+                      """)
+                      #endif
+                      
+                     
+                      self?.tableView.beginUpdates()
+                   
+                      self?.tableView.deleteRows(at: deletions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                      self?.tableView.insertRows(at: insertions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                      self?.tableView.reloadRows(at: modifications.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                      
+                      self?.tableView.endUpdates()
+                      
+                  case let .error(error):
+                    print(error)
+                    
+                    
+                  }
+              }
+        */
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -157,6 +186,7 @@ class FriendsTableViewController: UITableViewController {
         
         
     }
+    
     
     
     private var filterFriends = [User]()

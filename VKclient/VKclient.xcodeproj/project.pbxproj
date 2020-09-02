@@ -153,10 +153,10 @@
 		048DED5E24C7070B0006F0B8 /* Communities */ = {
 			isa = PBXGroup;
 			children = (
-				04C9164824B5F58700722318 /* RecommendedCommunitiesTableViewController.swift */,
-				04C9164A24B5F68E00722318 /* RecommendedCommunitiesCell.swift */,
 				04C9164024B5D8B300722318 /* CommunityTableViewController.swift */,
 				04C9164624B5ED2900722318 /* CommunityCell.swift */,
+				04C9164824B5F58700722318 /* RecommendedCommunitiesTableViewController.swift */,
+				04C9164A24B5F68E00722318 /* RecommendedCommunitiesCell.swift */,
 			);
 			path = Communities;
 			sourceTree = "<group>";

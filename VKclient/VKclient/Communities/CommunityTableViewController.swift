@@ -48,10 +48,46 @@ class CommunityTableViewController: UITableViewController {
                  }
              }
     }
-  
+   private var groupsNotificationToken: NotificationToken?
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
+        groupsNotificationToken = groups?.observe  { [weak self] change in
+                    switch change {
+                    case .initial:
+                        #if DEBUG
+                        print("Initialized")
+                        #endif
+                 
+                    case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
+                        #if DEBUG
+                        print("""
+                            New count: \(results.count)
+                            Deletions: \(deletions)
+                            Insertions: \(insertions)
+                            Modifications: \(modifications)
+                        """)
+                        #endif
+                        
+                       
+                        self?.tableView.beginUpdates()
+                     
+                        self?.tableView.deleteRows(at: deletions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                        self?.tableView.insertRows(at: insertions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                        self?.tableView.reloadRows(at: modifications.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                        
+                        self?.tableView.endUpdates()
+                        
+                    case let .error(error):
+                      print(error)
+                      
+                      
+                    }
+                }
+        
+        
+        
+        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -67,14 +103,6 @@ class CommunityTableViewController: UITableViewController {
     
   
 
-    
-    
-    @objc private func refresh(_ sender: UIRefreshControl){
-           try? realmManager?.deleteAll()
-            loadData() { [weak self] in
-                self?.refreshControl?.endRefreshing()
-                   }
-       }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommunityCell") as? CommunitiesCell else {fatalError()}
         var group: Group?
@@ -104,41 +132,7 @@ class CommunityTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-    
-   /* override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            tableView.beginUpdates()
-            groups.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .right)
-            tableView.endUpdates()
-            
-        }
-    }
-    
-    
-        @IBAction func addCommunity(_ sendoer: Any) {
-     let alert = UIAlertController(title: "Введите название сообщества", message: nil, preferredStyle: .alert)
-     alert.addTextField{(textField) in
-     textField.placeholder = "Название"
-     }
-     let action = UIAlertAction(title: "ОК", style: .default){[weak self, weak alert] (action) in
-     guard let firstText = alert?.textFields?.first?.text else {return}
-     
-     self?.addCommunity(name: firstText)
-     }
-     
-     alert.addAction(action)
-     present(alert,animated: true, completion: nil)
-     }
-     
-     / private func addCommunity(name: String){
-     
-     groups.append(Group.init(id: name: name, photo_200: nil))
-     tableView.reloadData()
-     
-     
-     }
-     */
+  
     private var filterGroups = [Group]()
     
 }
@@ -153,3 +147,38 @@ extension CommunityTableViewController: UISearchResultsUpdating {
         tableView.reloadData()
     }
 }
+
+/* override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+ if editingStyle == .delete {
+ tableView.beginUpdates()
+ groups.remove(at: indexPath.row)
+ tableView.deleteRows(at: [indexPath], with: .right)
+ tableView.endUpdates()
+ 
+ }
+ }
+ 
+ 
+ @IBAction func addCommunity(_ sendoer: Any) {
+ let alert = UIAlertController(title: "Введите название сообщества", message: nil, preferredStyle: .alert)
+ alert.addTextField{(textField) in
+ textField.placeholder = "Название"
+ }
+ let action = UIAlertAction(title: "ОК", style: .default){[weak self, weak alert] (action) in
+ guard let firstText = alert?.textFields?.first?.text else {return}
+ 
+ self?.addCommunity(name: firstText)
+ }
+ 
+ alert.addAction(action)
+ present(alert,animated: true, completion: nil)
+ }
+ 
+ / private func addCommunity(name: String){
+ 
+ groups.append(Group.init(id: name: name, photo_200: nil))
+ tableView.reloadData()
+ 
+ 
+ }
+ */
