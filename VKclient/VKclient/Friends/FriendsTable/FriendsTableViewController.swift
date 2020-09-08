@@ -14,26 +14,22 @@ class FriendsTableViewController: UITableViewController {
         let friends: Results<User>? = realmManager?.getObjects()
         return friends
     }
-   var sortedFriends = [Character: [User]]()
-    
-    let interactiveTransition = InteractiveTransition()
-    
-    func sortFriends(friends: [User]) -> [Character: [User]]  {
-        var friendsDict = [Character: [User]]()
-        
-        friends
-            .sorted { $0.first_name < $1.first_name }
-            .forEach { friend in
-                guard let firstChar = friend.first_name.first else { return }
-                if var thisChar = friendsDict[firstChar] {
-                    thisChar.append(friend)
-                    friendsDict[firstChar] = thisChar
-                } else {
-                    friendsDict[firstChar] = [friend]
-                }
-        }
-        return friendsDict
+    var sortedFriends = [[User]]() {
+    didSet {
+        sortedIds = sortedFriends.map { $0.map { $0.id } }
+           
+           if let friends: Results<User> = realmManager?.getObjects() {
+            self.cachedUserIds = Array(friends).map { $0.id }
+           } else {
+               cachedUserIds.removeAll()
+           }
+       }
     }
+    let interactiveTransition = InteractiveTransition()
+    var sortedIds = [[Int?]]()
+    var cachedUserIds = [Int?]()
+  
+  
     
     
     
@@ -74,12 +70,14 @@ class FriendsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         loadData()
-        sortedFriends = sortFriends(friends: Array(friends!))
-     /*
+       
       friendsNotificationToken = friends?.observe  { [weak self] change in
+        guard let self = self else { return }
                   switch change {
                   case .initial:
-                    print("initial")
+                    self.sortFriends()
+                       self.tableView.reloadData()
+                  
                   case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
                       #if DEBUG
                       print("""
@@ -90,14 +88,36 @@ class FriendsTableViewController: UITableViewController {
                       """)
                       #endif
                       
-                     
-                      self?.tableView.beginUpdates()
-                   
-                      self?.tableView.deleteRows(at: deletions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
-                      self?.tableView.insertRows(at: insertions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
-                      self?.tableView.reloadRows(at: modifications.map { IndexPath(item: $0, section: 0) }, with: .automatic)
-                      
-                      self?.tableView.endUpdates()
+                      let deletions = deletions.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
+                      let modifications = modifications.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
+                                    
+                        self.sortFriends()
+                      let insertions = insertions.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
+                                  
+                                  guard insertions.count == 0 else {
+                                      self.tableView.reloadData()
+                                      return
+                                  }
+                                  
+                        self.tableView.beginUpdates()
+                      if !modifications.isEmpty {
+                                        self.tableView.reloadRows(at: modifications, with: .automatic)
+                                    }
+                                    if !deletions.isEmpty {
+                                        let rowsInDeleteSections = Set(deletions.map { $0.section })
+                                            .compactMap { ($0, self.tableView.numberOfRows(inSection: $0)) }
+                                        let sectionsWithOneCell = rowsInDeleteSections.filter { section, count in count == 1 }.map { section, _ in section }
+                                        let sectionsWithMoreCells = rowsInDeleteSections.filter { section, count in count > 1 }.map { section, _ in section }
+                                        if sectionsWithOneCell.count > 0 {
+                                            self.tableView.deleteSections(IndexSet(sectionsWithOneCell), with: .automatic)
+                                        }
+                                        if sectionsWithMoreCells.count > 0 {
+                                            let indexForDeletion = deletions.filter { sectionsWithMoreCells.contains($0.section) }
+                                            self.tableView.deleteRows(at: indexForDeletion, with: .automatic)
+                                        }
+                                    }
+
+                      self.tableView.endUpdates()
                       
                   case let .error(error):
                     print(error)
@@ -105,7 +125,9 @@ class FriendsTableViewController: UITableViewController {
                     
                   }
               }
-        */
+
+    
+        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -116,13 +138,25 @@ class FriendsTableViewController: UITableViewController {
         
         tableView.register(UINib(nibName: "SectionHeaderForFriendsTableView", bundle: nil), forHeaderFooterViewReuseIdentifier: "headerFriendsTable")
     }
+    deinit {
+            friendsNotificationToken?.invalidate()
+        }
+    
+    private func getUserIndexPathByRealmOrder(order: Int) -> IndexPath? {
+        guard order < cachedUserIds.count, let userId = cachedUserIds[order] else { return nil }
+        
+        guard let section = sortedIds.firstIndex(where: { $0.contains(userId) }),
+            let item = sortedIds[section].firstIndex(where: { $0 == userId }) else { return nil }
+        
+        return IndexPath(item: item, section: section)
+    }
     
     //---------------------
     override func numberOfSections(in tableView: UITableView) -> Int {
         if isFiltering {
             return 1
         } else {
-            return sortedFriends.keys.count
+            return sortedFriends.count
         }
     }
     
@@ -135,9 +169,8 @@ class FriendsTableViewController: UITableViewController {
         if isFiltering {
             user = filterFriends[indexPath.row]
         } else {
-            let firstChar = sortedFriends.keys.sorted()[indexPath.section]
-            let friends = sortedFriends[firstChar]!
-            user = friends[indexPath.row]
+       
+            user = sortedFriends[indexPath.section][indexPath.item]
         }
         let urlImg = user.photo_100
         cell.avaImage.kf.setImage(with: URL(string: urlImg))
@@ -147,11 +180,29 @@ class FriendsTableViewController: UITableViewController {
         return cell
         
     }
-    
+    private func sortFriends() {
+         sortedFriends.removeAll()
+         
+         guard let ffriends = friends else { return }
+         let friends: [User] = Array(ffriends)
+         var sortedFriends = [[User]]()
+         
+         let groupedElements = Dictionary(grouping: friends) { friend -> String in
+            return String(friend.first_name.prefix(1))
+         }
+         let sortedKeys = groupedElements.keys.sorted()
+         sortedKeys.forEach { key in
+             if let values = groupedElements[key] {
+                 sortedFriends.append(values)
+             }
+         }
+         
+         self.sortedFriends = sortedFriends
+     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let  section = sortedFriends.keys.sorted()[section]
+        let  section = sortedFriends[section].first?.first_name.first ?? " "
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerFriendsTable") as? SectionHeaderForFriendsTableView else {fatalError()}
         if isFiltering {
             header.Char.text = "Результаты поиска:"
@@ -172,9 +223,7 @@ class FriendsTableViewController: UITableViewController {
         if isFiltering {
             user = filterFriends[indexPath.row]
         } else {
-            let firstChar = sortedFriends.keys.sorted()[indexPath.section]
-            let friends = sortedFriends[firstChar]!
-            user = friends[indexPath.row]
+            user = sortedFriends[indexPath.section][indexPath.item]
         }
         
         
@@ -196,8 +245,7 @@ class FriendsTableViewController: UITableViewController {
         if isFiltering {
             return filterFriends.count
         } else {
-            let keysSorted = sortedFriends.keys.sorted()
-            return sortedFriends[keysSorted[section]]?.count ?? 0
+            return  sortedFriends[section].count
             
         }
     }
@@ -246,3 +294,28 @@ extension FriendsTableViewController: UINavigationControllerDelegate {
         return interactiveTransition.hasStarted ? interactiveTransition : nil
     }
 }
+
+
+
+
+
+
+/*
+   func sortFriends(friends: [User]) -> [Character: [User]]  {
+             sortedFriends.removeAll()
+         var friendsDict = [Character: [User]]()
+         
+         friends
+             .sorted { $0.first_name < $1.first_name }
+             .forEach { friend in
+                 guard let firstChar = friend.first_name.first else { return }
+                 if var thisChar = friendsDict[firstChar] {
+                     thisChar.append(friend)
+                     friendsDict[firstChar] = thisChar
+                 } else {
+                     friendsDict[firstChar] = [friend]
+                 }
+         }
+         return friendsDict
+     }
+   */
