@@ -8,13 +8,13 @@
 
 import UIKit
 
-class  NewsTableViewCellXib: UITableViewCell {
+class NewsTableViewCellXib: UITableViewCell {
 
     @IBOutlet weak var authorAvaView: UIView!
     @IBOutlet weak var authorAva: UIImageView!
     @IBOutlet weak var authorNameLabel: UILabel!
     @IBOutlet weak var newsPhoto: UIImageView!
-    @IBOutlet weak var newsLextLabel: UILabel!
+    @IBOutlet weak var newsTextLabel: UILabel!
    
     @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var shareView: UIView!
@@ -51,6 +51,9 @@ override func prepareForReuse() {
        authorAva.layer.shadowPath = UIBezierPath(ovalIn: authorAvaView.bounds).cgPath
        authorAva.layer.cornerRadius = authorAvaView.bounds.width / 2
        authorAva.clipsToBounds = true
+    
+    
+    
        
    }
 }
