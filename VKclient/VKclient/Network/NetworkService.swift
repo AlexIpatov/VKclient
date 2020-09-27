@@ -19,6 +19,14 @@ class NetworkService {
         
     }()
     
+    
+    private static let groupsQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
+    
     let baseUrl = "https://api.vk.com"
     static let shared = NetworkService()
     var friendId = Session.shared.userId
@@ -28,33 +36,45 @@ class NetworkService {
     
     func loadGroups(token: String, completion: ((Result<[Group], Error>) -> Void)? = nil) {
         
-        let path = "/method/groups.get"
-        
-        let params: Parameters = [
-            "access_token": token,
-            "extended": 1,
-            "v": "5.92"
-        ]
-        
-        
-        NetworkService.session.request( baseUrl + path, method: .get, parameters: params).responseJSON { response in
-            switch response.result {
-            case .success(let data):
-                let json = JSON(data)
-                let groupsJSONs = json["response"]["items"].arrayValue
-                
-                let groups = groupsJSONs.map { Group(from: $0) }
-                try? RealmManager.shared?.add(objects: groups)
-                
-                completion?(.success(groups))
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion?(.failure(error))
+        let requestOperation = BlockOperation {
+            let path = "/method/groups.get"
+            
+            let params: Parameters = [
+                "access_token": token,
+                "extended": 1,
+                "v": "5.92"
+            ]
+            
+            
+            
+            
+            let responseOperation = BlockOperation {
+                NetworkService.session.request( self.baseUrl + path, method: .get, parameters: params).responseJSON { response in
+                   
+                        switch response.result {
+                        case .success(let data):
+                            let json = JSON(data)
+                            let groupsJSONs = json["response"]["items"].arrayValue
+                            
+                            let groups = groupsJSONs.map { Group(from: $0) }
+                            
+                            try? RealmManager.shared?.add(objects: groups)
+                            
+                            completion?(.success(groups))
+                            
+                        case .failure(let error):
+                            print(error.localizedDescription)
+                            completion?(.failure(error))
+                        }
+                    }
+                 
             }
+            NetworkService.groupsQueue.addOperation(responseOperation)
         }
+        NetworkService.groupsQueue.addOperation(requestOperation)
+        
     }
-    
+
     func loadFriends(token: String, completion: ((Result<[User], Error>) -> Void)? = nil) {
         
         let path = "/method/friends.get"
