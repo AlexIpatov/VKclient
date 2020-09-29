@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import Kingfisher
+import PromiseKit
 class FriendsTableViewController: UITableViewController {
     private var friends: Results<User>? {
         let friends: Results<User>? = realmManager?.getObjects()
@@ -28,7 +29,8 @@ class FriendsTableViewController: UITableViewController {
     let interactiveTransition = InteractiveTransition()
     var sortedIds = [[Int?]]()
     var cachedUserIds = [Int?]()
-  
+
+    
   
     
     
@@ -47,87 +49,28 @@ class FriendsTableViewController: UITableViewController {
     let networkService = NetworkService.shared
      private let realmManager = RealmManager.shared
     
+ 
     private func loadData() {
-        networkService.loadFriends(token: Session.shared.token) {
-                 [weak self] result in
-                 guard let self = self else { return }
-                 switch result {
-                 case let .success(friends):
-                     DispatchQueue.main.async {
-                         try? self.realmManager?.add(objects: friends)
-                         self.tableView.reloadData()
-                       
-                     }
-                    
-                     
-                 case let .failure(error):
-                     print(error)
-                 }
-             }
+        networkService.loadFriends(token: Session.shared.token)
+            .get {  [weak self] friends in
+                guard let self = self else { return }
+                try? self.realmManager?.add(objects: friends)
+                self.tableView.reloadData()
+        }
+            .catch{ [weak self] error in
+                print("Error: \(error)")
+        }
     }
+
+   
     private var friendsNotificationToken: NotificationToken?
     override func viewDidLoad() {
         super.viewDidLoad()
 
         loadData()
-       
-      friendsNotificationToken = friends?.observe  { [weak self] change in
-        guard let self = self else { return }
-                  switch change {
-                  case .initial:
-                    self.sortFriends()
-                       self.tableView.reloadData()
-                  
-                  case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
-                      #if DEBUG
-                      print("""
-                          New count: \(results.count)
-                          Deletions: \(deletions)
-                          Insertions: \(insertions)
-                          Modifications: \(modifications)
-                      """)
-                      #endif
-                      
-                      let deletions = deletions.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
-                      let modifications = modifications.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
-                                    
-                        self.sortFriends()
-                      let insertions = insertions.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
-                                  
-                                  guard insertions.count == 0 else {
-                                      self.tableView.reloadData()
-                                      return
-                                  }
-                                  
-                        self.tableView.beginUpdates()
-                      if !modifications.isEmpty {
-                                        self.tableView.reloadRows(at: modifications, with: .automatic)
-                                    }
-                                    if !deletions.isEmpty {
-                                        let rowsInDeleteSections = Set(deletions.map { $0.section })
-                                            .compactMap { ($0, self.tableView.numberOfRows(inSection: $0)) }
-                                        let sectionsWithOneCell = rowsInDeleteSections.filter { section, count in count == 1 }.map { section, _ in section }
-                                        let sectionsWithMoreCells = rowsInDeleteSections.filter { section, count in count > 1 }.map { section, _ in section }
-                                        if sectionsWithOneCell.count > 0 {
-                                            self.tableView.deleteSections(IndexSet(sectionsWithOneCell), with: .automatic)
-                                        }
-                                        if sectionsWithMoreCells.count > 0 {
-                                            let indexForDeletion = deletions.filter { sectionsWithMoreCells.contains($0.section) }
-                                            self.tableView.deleteRows(at: indexForDeletion, with: .automatic)
-                                        }
-                                    }
+       realmNotification()
+      
 
-                      self.tableView.endUpdates()
-                      
-                  case let .error(error):
-                    print(error)
-                    
-                    
-                  }
-              }
-
-    
-        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -236,7 +179,63 @@ class FriendsTableViewController: UITableViewController {
         
     }
     
-    
+    func realmNotification() {
+        friendsNotificationToken = friends?.observe  { [weak self] change in
+        guard let self = self else { return }
+                  switch change {
+                  case .initial:
+                    self.sortFriends()
+                       self.tableView.reloadData()
+                  
+                  case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
+                      #if DEBUG
+                      print("""
+                          New count: \(results.count)
+                          Deletions: \(deletions)
+                          Insertions: \(insertions)
+                          Modifications: \(modifications)
+                      """)
+                      #endif
+                      
+                      let deletions = deletions.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
+                      let modifications = modifications.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
+                                    
+                        self.sortFriends()
+                      let insertions = insertions.compactMap { self.getUserIndexPathByRealmOrder(order: $0) }
+                                  
+                                  guard insertions.count == 0 else {
+                                      self.tableView.reloadData()
+                                      return
+                                  }
+                                  
+                        self.tableView.beginUpdates()
+                      if !modifications.isEmpty {
+                                        self.tableView.reloadRows(at: modifications, with: .automatic)
+                                    }
+                                    if !deletions.isEmpty {
+                                        let rowsInDeleteSections = Set(deletions.map { $0.section })
+                                            .compactMap { ($0, self.tableView.numberOfRows(inSection: $0)) }
+                                        let sectionsWithOneCell = rowsInDeleteSections.filter { section, count in count == 1 }.map { section, _ in section }
+                                        let sectionsWithMoreCells = rowsInDeleteSections.filter { section, count in count > 1 }.map { section, _ in section }
+                                        if sectionsWithOneCell.count > 0 {
+                                            self.tableView.deleteSections(IndexSet(sectionsWithOneCell), with: .automatic)
+                                        }
+                                        if sectionsWithMoreCells.count > 0 {
+                                            let indexForDeletion = deletions.filter { sectionsWithMoreCells.contains($0.section) }
+                                            self.tableView.deleteRows(at: indexForDeletion, with: .automatic)
+                                        }
+                                    }
+
+                      self.tableView.endUpdates()
+                      
+                  case let .error(error):
+                    print(error)
+                    
+                    
+                  }
+              }
+
+    }
     
     private var filterFriends = [User]()
     
@@ -296,26 +295,24 @@ extension FriendsTableViewController: UINavigationControllerDelegate {
 }
 
 
-
-
-
-
 /*
-   func sortFriends(friends: [User]) -> [Character: [User]]  {
-             sortedFriends.removeAll()
-         var friendsDict = [Character: [User]]()
-         
-         friends
-             .sorted { $0.first_name < $1.first_name }
-             .forEach { friend in
-                 guard let firstChar = friend.first_name.first else { return }
-                 if var thisChar = friendsDict[firstChar] {
-                     thisChar.append(friend)
-                     friendsDict[firstChar] = thisChar
-                 } else {
-                     friendsDict[firstChar] = [friend]
-                 }
-         }
-         return friendsDict
-     }
-   */
+ private func loadData() {
+ networkService.loadFriends(token: Session.shared.token) {
+ [weak self] result in
+ guard let self = self else { return }
+ switch result {
+ case let .success(friends):
+ DispatchQueue.main.async {
+ try? self.realmManager?.add(objects: friends)
+ self.tableView.reloadData()
+ 
+ }
+ 
+ 
+ case let .failure(error):
+ print(error)
+ }
+ }
+ }
+ */
+    

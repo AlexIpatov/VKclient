@@ -15,12 +15,7 @@ class CommunitiesCell: UITableViewCell {
     
     @IBOutlet weak var communityAvaView: UIView!
     @IBOutlet weak var communityImage: UIImageView!
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-    
-    
+        
     var shadowCol: UIColor = .black {
         didSet {
             setNeedsDisplay()
@@ -64,7 +59,7 @@ class CommunitiesCell: UITableViewCell {
         animation.beginTime = CACurrentMediaTime()
         animation.fillMode = CAMediaTimingFillMode.backwards
         
-        self.communityAvaView.layer.add(animation, forKey: nil)
+        communityAvaView.layer.add(animation, forKey: nil)
     }
     
     

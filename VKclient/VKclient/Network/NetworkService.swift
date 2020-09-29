@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
-
+import PromiseKit
 class NetworkService {
     static let session: Alamofire.Session = {
         let configuration = URLSessionConfiguration.default
@@ -34,7 +34,7 @@ class NetworkService {
     
     
     
-    func loadGroups(token: String, completion: ((Result<[Group], Error>) -> Void)? = nil) {
+    func loadGroups(token: String, completion: ((Swift.Result<[Group], Error>) -> Void)? = nil) {
         
         let requestOperation = BlockOperation {
             let path = "/method/groups.get"
@@ -75,7 +75,31 @@ class NetworkService {
         
     }
 
-    func loadFriends(token: String, completion: ((Result<[User], Error>) -> Void)? = nil) {
+    
+    
+    /*
+     func weatherPromise(for city: String) -> Promise<Weather>  {
+           let path = "/data/2.5/weather"
+           let parameters: Parameters = [
+               "q": city,
+               "units": "metric",
+               "appId": "8b32f5f2dc7dbd5254ac73d984baf306"
+           ]
+           
+           return Promise { resolver in
+               NetworkService.session.request(host+path, method: .get, parameters: parameters).responseJSON { response in
+                   switch response.result {
+                   case let .success(json):
+                       let weather = Weather(JSON(json), city: city)
+                       resolver.fulfill(weather)
+                   case let .failure(error):
+                       resolver.reject(error)
+                   }
+               }
+           }
+       }
+     */
+    func loadFriends(token: String) -> Promise<[User]> {
         
         let path = "/method/friends.get"
         
@@ -85,7 +109,7 @@ class NetworkService {
             "fields": "photo_100",
             "v": "5.122"
         ]
-        
+        return Promise { resolver in
         NetworkService.session.request(baseUrl + path, method: .get, parameters: params).responseJSON { response in
             
             switch response.result {
@@ -95,16 +119,16 @@ class NetworkService {
                 
                 let friends = userJSONs.map { User(from: $0) }
                 try? RealmManager.shared?.add(objects: friends)
-                completion?(.success(friends))
+                resolver.fulfill(friends)
+              
                 
             case .failure(let error):
-                print(error.localizedDescription)
-                completion?(.failure(error))
+                resolver.reject(error)
             }
         }
     }
-    
-    func loadPhotos(token: String, userId: Int, completion: ((Result<[Photo], Error>) -> Void)? = nil) {
+    }
+    func loadPhotos(token: String, userId: Int, completion: ((Swift.Result<[Photo], Error>) -> Void)? = nil) {
         
         let path = "/method/photos.get"
         
@@ -132,7 +156,7 @@ class NetworkService {
         }
     }
     
-    func loadGroupsSearch(token: String, name: String, completion: ((Result<[Group], Error>) -> Void)? = nil) {
+    func loadGroupsSearch(token: String, name: String, completion: ((Swift.Result<[Group], Error>) -> Void)? = nil) {
         
         let path = "/method/groups.search"
         
@@ -160,7 +184,7 @@ class NetworkService {
         }
     }
     
-    func loadNews(token: String, completion: ((Result<News, Error>) -> Void)? = nil) {
+    func loadNews(token: String, completion: ((Swift.Result<News, Error>) -> Void)? = nil) {
         
         let path = "/method/newsfeed.get"
         
