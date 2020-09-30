@@ -11,17 +11,15 @@ import UIKit
 class RecommendedCommunitiesTableViewController: UITableViewController {
     
     
+    var photoService: PhotoService?
+    
     var searchGroups = [Group]()
     private let searchController = UISearchController(searchResultsController: nil)
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-       
+        photoService = PhotoService(container: tableView)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
@@ -29,28 +27,23 @@ class RecommendedCommunitiesTableViewController: UITableViewController {
         definesPresentationContext = true
         
     }
-    
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecommendedCommunityCell") as? recommendedCommunitiesCell else {fatalError()}
         var searchGroup : Group
         searchGroup = searchGroups[indexPath.row]
         cell.recommendedCommunityName.text = searchGroup.name
-        let url = searchGroup.photo_200
-        cell.recommendedCommunityImage.kf.setImage(with: URL(string: url))
+      
+        cell.recommendedCommunityImage.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: searchGroup.photo_200)
         return cell
         
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return searchGroups.count
     }
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-    
 }
 extension RecommendedCommunitiesTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
@@ -70,5 +63,4 @@ extension RecommendedCommunitiesTableViewController: UISearchResultsUpdating {
         }
         tableView.reloadData()
     }
-    
 }
