@@ -12,10 +12,9 @@ import Kingfisher
 class CommunitiesCell: UITableViewCell {
     
     @IBOutlet weak var communityName: UILabel!
-    
     @IBOutlet weak var communityAvaView: UIView!
     @IBOutlet weak var communityImage: UIImageView!
-        
+    
     var shadowCol: UIColor = .black {
         didSet {
             setNeedsDisplay()
@@ -26,13 +25,11 @@ class CommunitiesCell: UITableViewCell {
             setNeedsDisplay()
         }
     }
-    
     var shadowRad: CGFloat = 5 {
         didSet {
             setNeedsDisplay()
         }
     }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         communityAvaView.layer.cornerRadius = communityAvaView.bounds.width / 2
@@ -48,7 +45,6 @@ class CommunitiesCell: UITableViewCell {
         communityImage.isUserInteractionEnabled = true
         
     }
-    
     @objc func onAvaTapped(_ gesture: UITapGestureRecognizer){
         let animation = CASpringAnimation(keyPath: "transform.scale")
         animation.fromValue = 0.7

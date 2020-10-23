@@ -23,39 +23,39 @@ class PushAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         destination.view.transform = CGAffineTransform(translationX: source.view.frame.width, y: 0)
         
         UIView.animateKeyframes(
-                withDuration: transitionDuration(using: transitionContext),
-                delay: 0,
-                options: .calculationModePaced,
-                animations: {
-                    
-                    UIView.addKeyframe(withRelativeStartTime: 0,
-                                       relativeDuration: 0.75) {
-                                        let transform = CGAffineTransform(translationX: -200, y: 0)
-                                        let scale = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                                        
-                                        source.view.transform = transform.concatenating(scale)
-                    }
-                    
-                    
-                    UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.4) {
-                        let translation = CGAffineTransform(translationX: source.view.frame.width / 2, y: 0)
-                        
-                        let scale = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                        destination.view.transform = translation.concatenating(scale)
-                    }
-                    
-                    UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
-                        destination.view.transform = .identity
-                    }
-                    
-            }) { result in
-                if result && !transitionContext.transitionWasCancelled {
-                    source.view.transform = .identity
-                    transitionContext.completeTransition(true)
+            withDuration: transitionDuration(using: transitionContext),
+            delay: 0,
+            options: .calculationModePaced,
+            animations: {
+                
+                UIView.addKeyframe(withRelativeStartTime: 0,
+                                   relativeDuration: 0.75) {
+                                    let transform = CGAffineTransform(translationX: -200, y: 0)
+                                    let scale = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                                    
+                                    source.view.transform = transform.concatenating(scale)
                 }
-                else {
-                    transitionContext.completeTransition(false)
+                
+                
+                UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.4) {
+                    let translation = CGAffineTransform(translationX: source.view.frame.width / 2, y: 0)
+                    
+                    let scale = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                    destination.view.transform = translation.concatenating(scale)
                 }
+                
+                UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+                    destination.view.transform = .identity
+                }
+                
+        }) { result in
+            if result && !transitionContext.transitionWasCancelled {
+                source.view.transform = .identity
+                transitionContext.completeTransition(true)
+            }
+            else {
+                transitionContext.completeTransition(false)
+            }
         }
     }
 }
@@ -85,19 +85,19 @@ class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                                     UIView.addKeyframe(withRelativeStartTime: 0,
                                                        relativeDuration: 0.4,
                                                        animations: {
-                                                           let translation = CGAffineTransform(translationX: source.view.frame.width / 2, y: 0)
-                                                           let scale = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                                           source.view.transform = translation.concatenating(scale)
+                                                        let translation = CGAffineTransform(translationX: source.view.frame.width / 2, y: 0)
+                                                        let scale = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                                                        source.view.transform = translation.concatenating(scale)
                                     })
                                     UIView.addKeyframe(withRelativeStartTime: 0.4,
                                                        relativeDuration: 0.4,
                                                        animations: {
-                                                           source.view.transform = CGAffineTransform(translationX: source.view.frame.width, y: 0)
+                                                        source.view.transform = CGAffineTransform(translationX: source.view.frame.width, y: 0)
                                     })
                                     UIView.addKeyframe(withRelativeStartTime: 0.25,
                                                        relativeDuration: 0.75,
                                                        animations: {
-                                                           destination.view.transform = .identity
+                                                        destination.view.transform = .identity
                                     })
                                     
                                     

@@ -10,21 +10,17 @@ import UIKit
 import WebKit
 
 class VKLoginController: UIViewController {
-    
     @IBOutlet var webView: WKWebView! {
         didSet {
             webView.navigationDelegate = self
         }
     }
-    
-    
     func removeCookies(){
-    let cookieJar = HTTPCookieStorage.shared
-    for cookie in cookieJar.cookies! {
-        cookieJar.deleteCookie(cookie)
+        let cookieJar = HTTPCookieStorage.shared
+        for cookie in cookieJar.cookies! {
+            cookieJar.deleteCookie(cookie)
+        }
     }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         removeCookies()
@@ -40,19 +36,15 @@ class VKLoginController: UIViewController {
             URLQueryItem(name: "response_type", value: "token"),
             URLQueryItem(name: "v", value: "5.124")
         ]
-        
         let request = URLRequest(url: components.url!)
         webView.load(request)
-        
     }
 }
-
 extension VKLoginController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         guard let url = navigationResponse.response.url,
             url.path == "/blank.html",
             let fragment = url.fragment else { decisionHandler(.allow); return }
-        
         let params = fragment
             .components(separatedBy: "&")
             .map { $0.components(separatedBy: "=") }
@@ -63,26 +55,19 @@ extension VKLoginController: WKNavigationDelegate {
                 dict[key] = value
                 return dict
         }
-        
-        print(params)
-        
         guard let token = params["access_token"],
             let userIdString = params["user_id"],
             let _ = Int(userIdString) else {
                 decisionHandler(.allow)
                 return
         }
-        
         Session.shared.token = token
         Session.shared.userId = Int(userIdString)!
         performSegue(withIdentifier: "Run the App", sender: nil)
-        
-      
-        
         decisionHandler(.cancel)
-       
-        }
-        }
-    
+        
+    }
+}
+
 
 

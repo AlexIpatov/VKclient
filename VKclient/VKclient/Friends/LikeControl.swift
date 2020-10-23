@@ -11,73 +11,43 @@ import UIKit
 
 @IBDesignable class LikeControl: UIControl {
 
-    
-  
-    private var count: Int = 0
-    
-    private let countLable = UILabel()
     private let imageView = UIImageView()
-    
-    
     func addLikeView() {
-      imageView.translatesAutoresizingMaskIntoConstraints = false
-            countLable.translatesAutoresizingMaskIntoConstraints = false
-              addSubview(imageView)
-              addSubview(countLable)
-              
-    
-              let imageConstrainst = [
-                  imageView.leftAnchor.constraint(equalTo: leftAnchor),
-                  imageView.rightAnchor.constraint(equalTo: countLable.leftAnchor),
-                  imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
-                  imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                  imageView.heightAnchor.constraint(equalToConstant: 30)
-                      
-              ]
-              
-              let lableConstraint = [
-                  countLable.rightAnchor.constraint(equalTo: rightAnchor),
-                  countLable.centerYAnchor.constraint(equalTo: centerYAnchor)
-              ]
- 
-         NSLayoutConstraint.activate(lableConstraint + imageConstrainst)
-            
-             
-              let gesture = UITapGestureRecognizer(target: self, action: #selector(onHeartTapped(_:)))
-              imageView.addGestureRecognizer(gesture)
-              imageView.isUserInteractionEnabled = true
-          
-              updateCount()
-              
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imageView)
+        let imageConstrainst = [
+            imageView.leftAnchor.constraint(equalTo: leftAnchor),
+            imageView.rightAnchor.constraint(equalTo: rightAnchor),
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: 30)
+        ]
+        NSLayoutConstraint.activate(imageConstrainst)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onHeartTapped(_:)))
+        imageView.addGestureRecognizer(gesture)
+        imageView.isUserInteractionEnabled = true
+        updateCount()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-   
         self.addLikeView()
-       
-        }
-    
+    }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.addLikeView()
     }
-    
-   
     private func updateCount() {
-               countLable.text = "\(count)"
-        if isSelected {
+
+       if isSelected {
             imageView.image = UIImage(systemName: "heart.fill")
         }
         else {
-              imageView.image = UIImage(systemName: "heart")
+            imageView.image = UIImage(systemName: "heart")
         }
-    }
-    
+   }
     @objc func onHeartTapped(_ gesture: UITapGestureRecognizer){
         isSelected = !isSelected
-        count += isSelected ? 1 : -1
         updateCount()
         sendActions(for: .valueChanged)
         let animation = CASpringAnimation(keyPath: "transform.scale")
@@ -90,9 +60,5 @@ import UIKit
         animation.fillMode = CAMediaTimingFillMode.backwards
         
         self.imageView.layer.add(animation, forKey: nil)
-        self.countLable.layer.add(animation, forKey: nil)
     }
-    
-    
-    
 }

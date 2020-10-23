@@ -31,7 +31,7 @@ class Group: Object, Decodable {
         
     }
     override class func primaryKey() -> String? {
-    "id"
+        "id"
     }
     
 }

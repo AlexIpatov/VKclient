@@ -16,7 +16,6 @@ class recommendedCommunitiesCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
     }
-    
     var shadowCol: UIColor = .black {
         didSet {
             setNeedsDisplay()
@@ -27,13 +26,11 @@ class recommendedCommunitiesCell: UITableViewCell {
             setNeedsDisplay()
         }
     }
-    
     var shadowRad: CGFloat = 5 {
         didSet {
             setNeedsDisplay()
         }
     }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         recomendedAvaView.layer.cornerRadius = recomendedAvaView.bounds.width / 2
@@ -47,7 +44,6 @@ class recommendedCommunitiesCell: UITableViewCell {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(onAvaTapped(_:)))
         recommendedCommunityImage.addGestureRecognizer(gesture)
         recommendedCommunityImage.isUserInteractionEnabled = true
-        
     }
     
     @objc func onAvaTapped(_ gesture: UITapGestureRecognizer){
@@ -61,11 +57,7 @@ class recommendedCommunitiesCell: UITableViewCell {
         animation.fillMode = CAMediaTimingFillMode.backwards
         
         self.recomendedAvaView.layer.add(animation, forKey: nil)
-    }
-    
-    
-    
-    
+    } 
 }
 
 

@@ -9,8 +9,5 @@
 import UIKit
 
 class SectionHeaderForFriendsTableView: UITableViewHeaderFooterView {
-
     @IBOutlet weak var Char: UILabel!
-
-
 }

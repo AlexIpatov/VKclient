@@ -12,12 +12,7 @@ class FriendsCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var avaContView: UIView!
     @IBOutlet weak var avaImage: UIImageView!
-    
-   
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
+  
      var shadowCol: UIColor = .black {
         didSet {
                setNeedsDisplay()

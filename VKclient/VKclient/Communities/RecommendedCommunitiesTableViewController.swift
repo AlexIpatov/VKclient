@@ -10,10 +10,9 @@ import UIKit
 
 class RecommendedCommunitiesTableViewController: UITableViewController {
     
-    
     var photoService: PhotoService?
-    
     var searchGroups = [Group]()
+    
     private let searchController = UISearchController(searchResultsController: nil)
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +31,10 @@ class RecommendedCommunitiesTableViewController: UITableViewController {
         var searchGroup : Group
         searchGroup = searchGroups[indexPath.row]
         cell.recommendedCommunityName.text = searchGroup.name
-      
         cell.recommendedCommunityImage.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: searchGroup.photo_200)
         return cell
         
     }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchGroups.count
     }
@@ -56,7 +53,6 @@ extension RecommendedCommunitiesTableViewController: UISearchResultsUpdating {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                
             case let .failure(error):
                 print(error)
             }
